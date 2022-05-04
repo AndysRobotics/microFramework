@@ -19,14 +19,13 @@ const frameWork = {
         return data;
     },
 
-    renderForLoops: function(freshRun=false){
-        if(freshRun){
-            this.loopItterations = 0;
-            for(let item of document.querySelectorAll('[data-each-index]')) item.remove();
-            
-            for(let el of document.querySelectorAll('[data-for]')){
-                el.removeAttribute('data-rendered');
-            }
+    renderForLoops: function(){
+        let loopProccessedTempAttr = 'data-loop-processed';
+        this.loopItterations = 0;
+        for(let item of document.querySelectorAll('[data-each-index]')) item.remove();
+        
+        for(let el of document.querySelectorAll('[data-for]')){
+            el.removeAttribute(loopProccessedTempAttr);
         }
 
         function fixItemCondition(attribute, item, forcondition, index){
@@ -56,8 +55,8 @@ const frameWork = {
             for(let el of document.querySelectorAll('[data-for]')){
                 let condition = el.getAttribute('data-for');
                 let templateElements = el.querySelectorAll(':scope [data-each]');
-                if(el.getAttribute('data-rendered')) continue;
-                el.setAttribute('data-rendered', true);
+                if(el.getAttribute(loopProccessedTempAttr)) continue;
+                el.setAttribute(loopProccessedTempAttr, true);
 
                 newLoopFound = true;
                 let dataList = this.getDataByPath(condition);
@@ -79,7 +78,7 @@ const frameWork = {
         }
             
         for(let el of document.querySelectorAll('[data-for]')){
-            el.removeAttribute('data-rendered');
+            el.removeAttribute(loopProccessedTempAttr);
         }
 
         if(this.loopItterations==this.maxLoopItterations){
@@ -90,20 +89,37 @@ const frameWork = {
     render: function(){
         this.renderForLoops(true);
 
+        function testCondition(self, condition){
+            if(self.getDataByPath(condition)) return true;
+
+            let parts = condition.split('!=');
+            if(parts.length==2) return (self.getDataByPath(parts[0])!=parts[1]);
+
+            parts = condition.split('>=');
+            if(parts.length==2) return (self.getDataByPath(parts[0])>=parts[1]);
+
+            parts = condition.split('<=');
+            if(parts.length==2) return (self.getDataByPath(parts[0])<=parts[1]);
+
+            parts = condition.split('=');
+            if(parts.length==2) return (self.getDataByPath(parts[0])==parts[1]);
+
+            parts = condition.split('<');
+            if(parts.length==2) return (self.getDataByPath(parts[0])<parts[1]);
+
+            parts = condition.split('>');
+            if(parts.length==2) return (self.getDataByPath(parts[0])>parts[1]);
+
+            return false;
+        }
+
         for(let el of document.querySelectorAll('[data-if]')){
             let condition = el.getAttribute('data-if');
-            let parts = condition.split('=');
-            let display = 'none';
-            if(parts.length==1){
-                if(this.getDataByPath(condition)){
-                    display = el.getAttribute('data-show') || 'block';
-                }
-            }else if(parts.length==2){
-                if(this.getDataByPath(parts[0])==parts[1]){
-                    display = el.getAttribute('data-show') || 'block';
-                }
+            if(testCondition(this, condition)){
+                el.style.display = el.getAttribute('data-show') || 'block';
+            }else{
+                el.style.display = 'none';
             }
-            el.style.display = display;
         }
 
         for(let el of document.querySelectorAll('[data-innerHtml]')){
