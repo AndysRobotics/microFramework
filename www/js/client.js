@@ -1,7 +1,7 @@
 const frameWork = {
     engine: '1.0.000',
     data: { loading: true, test: { show: true }, devices: [
-        { name: 'Hello', type: 'Cam', items: [{ name: "world1" }, { name: "world2" }] },
+        { name: 'Hello', type: 'Cam', items: [{ name: "world1", className: 'testClass' }, { name: "world2" }] },
         { name: 'NoItems', type: 'Cam2', items: [] },
     ] },
     lastRender: 0,
@@ -41,6 +41,7 @@ const frameWork = {
     render: function(){
         this._renderForLoops();
         this._renderSwithes();
+        this._renderClassNames();
         this._renderIfs();
         this._renderInnerHtml();
         this._renderImageSrcs();
@@ -70,7 +71,7 @@ const frameWork = {
 
         function fixItemConditions(item, forcondition, index){
             if(!item || typeof(item.getAttribute)!='function') return;
-            let attributes = ['data-if', 'data-for', 'data-innerHtml', 'data-switch', 'data-param', 'data-src'];
+            let attributes = ['data-if', 'data-for', 'data-innerHtml', 'data-switch', 'data-param', 'data-src', 'data-class'];
             for(let attribute of attributes){
                 fixItemCondition(attribute, item, forcondition, index);
                 for(let child of item.querySelectorAll(':scope [' + attribute + ']')){
@@ -210,6 +211,13 @@ const frameWork = {
                 this.hideElement(el);
                 el.src = '';
             }
+        }
+    },
+
+    _renderClassNames: function(){
+        for(let el of document.querySelectorAll('[data-class]')){
+            let path = el.getAttribute('data-class');
+            el.className = this.getDataByPath(path) || '';
         }
     },
 }
