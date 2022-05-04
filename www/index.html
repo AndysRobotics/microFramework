@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, user-scalable=no" />
+        <title>Micro Framework</title>
+        <link rel="icon" type="image/png" href="/favicon.png">
+        <link rel="stylesheet" href="/css/style.css" type="text/css">
+        <style>
+            [data-if], [data-for], [data-each], [data-none] { display: none; }
+        </style>
+    </head>
+    <body>
+        <div data-show="inline-block" data-innerHtml="test.name" data-unknown="Unknown"></div>
+        <div data-for="devices">
+            <div data-each>
+                <div data-if="devices.name" data-innerHtml="devices.name"></div>
+                <div data-if="devices.items.length=0">No Device Items</div>
+                <div data-for="devices.items">
+                    <div data-each>
+                        <div data-innerHtml="devices.items.name"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-if="loading">
+            Loading, please wait...
+        </div>
+        <script src="/js/client.js"></script>
+    </body>
+</html>
