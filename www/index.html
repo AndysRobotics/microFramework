@@ -7,7 +7,8 @@
         <link rel="icon" type="image/png" href="/favicon.png">
         <link rel="stylesheet" href="/css/style.css" type="text/css">
         <style>
-            [data-if], [data-for], [data-each], [data-none] { display: none; }
+            [data-if], [data-for], [data-each], [data-none],
+            [data-default], [data-case] { display: none; }
         </style>
     </head>
     <body>
@@ -15,6 +16,14 @@
         <div data-for="devices">
             <div data-each>
                 <div data-if="devices.name" data-innerHtml="devices.name"></div>
+                <div data-switch="devices.type">
+                    <div data-default>
+                        This device is unknown
+                    </div>
+                    <div data-case="Cam">
+                        This device is a camera
+                    </div>
+                </div>
                 <div data-if="devices.items.length=0">No Device Items</div>
                 <div data-for="devices.items">
                     <div data-each>

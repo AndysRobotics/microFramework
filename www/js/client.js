@@ -2,7 +2,7 @@ const frameWork = {
     engine: '1.0.000',
     data: { loading: true, test: { show: true }, devices: [
         { name: 'Hello', type: 'Cam', items: [{ name: "world1" }, { name: "world2" }] },
-        { name: 'NoItems', type: 'Cam', items: [] },
+        { name: 'NoItems', type: 'Cam2', items: [] },
     ] },
     lastRender: 0,
     maxLoopItterations: 20,
@@ -19,7 +19,17 @@ const frameWork = {
         return data;
     },
 
-    renderForLoops: function(){
+    showElement(el){
+        if(!el || typeof(el.getAttribute)!='function' || !el.style) return;
+        el.style.display = el.getAttribute('data-show') || 'block';
+    },
+
+    hideElement(el){
+        if(!el || typeof(el.getAttribute)!='function' || !el.style) return;
+        el.style.display = 'none';
+    },
+
+    _renderForLoops: function(){
         let loopProccessedTempAttr = 'data-loop-processed';
         this.loopItterations = 0;
         for(let item of document.querySelectorAll('[data-each-index]')) item.remove();
@@ -40,7 +50,7 @@ const frameWork = {
 
         function fixItemConditions(item, forcondition, index){
             if(!item || typeof(item.getAttribute)!='function') return;
-            let attributes = ['data-if', 'data-for', 'data-show', 'data-innerHtml'];
+            let attributes = ['data-if', 'data-for', 'data-show', 'data-innerHtml', 'data-switch'];
             for(let attribute of attributes){
                 fixItemCondition(attribute, item, forcondition, index);
                 for(let child of item.querySelectorAll('[' + attribute + ']')){
@@ -68,9 +78,9 @@ const frameWork = {
                         fixItemConditions(template, condition, i);
                         el.appendChild(template);
                     }
-                    el.style.display = el.getAttribute('data-show') || 'block';
+                    this.showElement(el);
                 }else{
-                    el.style.display = 'none';
+                    this.hideElement(el);
                 }
             }
             if(!newLoopFound) break;
@@ -86,8 +96,40 @@ const frameWork = {
         }
     },
 
+    _renderSwithes: function(){
+        for(let el of document.querySelectorAll('[data-switch]')){
+            let condition = el.getAttribute('data-switch');
+            let value = this.getDataByPath(condition);
+            if(typeof(value)!='string'){
+                this.hideElement(el);
+            }else{
+                let caseFound = false;
+                for(let c of el.querySelectorAll(':scope [data-case]')){
+                    let caseCondition = c.getAttribute('data-case');
+                    if(caseCondition==value){
+                        caseFound = true;
+                        this.showElement(c);
+                    }else{
+                        this.hideElement(c);
+                    }
+                }
+                let defCases = el.querySelectorAll(':scope [data-default]');
+                if(defCases.length){
+                    if(caseFound){
+                        this.hideElement(defCases[0]);
+                    }else{
+                        caseFound = true;
+                        this.showElement(defCases[0]);
+                    }
+                }
+                if(!caseFound) this.hideElement(el);
+            }
+        }
+    },
+
     render: function(){
-        this.renderForLoops(true);
+        this._renderForLoops();
+        this._renderSwithes();
 
         function testCondition(self, condition){
             if(self.getDataByPath(condition)) return true;
@@ -116,9 +158,9 @@ const frameWork = {
         for(let el of document.querySelectorAll('[data-if]')){
             let condition = el.getAttribute('data-if');
             if(testCondition(this, condition)){
-                el.style.display = el.getAttribute('data-show') || 'block';
+                this.showElement(el);
             }else{
-                el.style.display = 'none';
+                this.hideElement(el);
             }
         }
 
