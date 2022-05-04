@@ -69,7 +69,7 @@ const frameWork = {
 
         function fixItemConditions(item, forcondition, index){
             if(!item || typeof(item.getAttribute)!='function') return;
-            let attributes = ['data-if', 'data-for', 'data-show', 'data-innerHtml', 'data-switch', 'data-param'];
+            let attributes = ['data-if', 'data-for', 'data-innerHtml', 'data-switch', 'data-param'];
             for(let attribute of attributes){
                 fixItemCondition(attribute, item, forcondition, index);
                 for(let child of item.querySelectorAll(':scope [' + attribute + ']')){
