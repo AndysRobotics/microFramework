@@ -43,6 +43,7 @@ const frameWork = {
         this._renderSwithes();
         this._renderIfs();
         this._renderInnerHtml();
+        this._renderImageSrcs();
         this.lastRender = Date.now();
     },
 
@@ -69,7 +70,7 @@ const frameWork = {
 
         function fixItemConditions(item, forcondition, index){
             if(!item || typeof(item.getAttribute)!='function') return;
-            let attributes = ['data-if', 'data-for', 'data-innerHtml', 'data-switch', 'data-param'];
+            let attributes = ['data-if', 'data-for', 'data-innerHtml', 'data-switch', 'data-param', 'data-src'];
             for(let attribute of attributes){
                 fixItemCondition(attribute, item, forcondition, index);
                 for(let child of item.querySelectorAll(':scope [' + attribute + ']')){
@@ -194,6 +195,20 @@ const frameWork = {
                 el.innerHTML = data;
             }else{
                 el.innerHTML = el.getAttribute('data-unknown') || '';
+            }
+        }
+    },
+
+    _renderImageSrcs: function(){
+        for(let el of document.querySelectorAll('[data-src]')){
+            let path = el.getAttribute('data-src');
+            let data = this.getDataByPath(path);
+            if(data){
+                this.showElement(el);
+                el.src = data;
+            }else{
+                this.hideElement(el);
+                el.src = '';
             }
         }
     },
