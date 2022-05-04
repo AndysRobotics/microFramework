@@ -97,14 +97,14 @@ const frameWork = {
     },
 
     _renderSwithes: function(){
-        for(let el of document.querySelectorAll('[data-switch]')){
-            let condition = el.getAttribute('data-switch');
+        for(let swEl of document.querySelectorAll('[data-switch]')){
+            let condition = swEl.getAttribute('data-switch');
             let value = this.getDataByPath(condition);
             if(typeof(value)!='string'){
-                this.hideElement(el);
+                this.hideElement(swEl);
             }else{
                 let caseFound = false;
-                for(let c of el.querySelectorAll(':scope [data-case]')){
+                for(let c of swEl.querySelectorAll(':scope [data-case]')){
                     let caseCondition = c.getAttribute('data-case');
                     if(caseCondition==value){
                         caseFound = true;
@@ -113,7 +113,7 @@ const frameWork = {
                         this.hideElement(c);
                     }
                 }
-                let defCases = el.querySelectorAll(':scope [data-default]');
+                let defCases = swEl.querySelectorAll(':scope [data-default]');
                 if(defCases.length){
                     if(caseFound){
                         this.hideElement(defCases[0]);
@@ -122,7 +122,11 @@ const frameWork = {
                         this.showElement(defCases[0]);
                     }
                 }
-                if(!caseFound) this.hideElement(el);
+                if(caseFound){
+                    this.showElement(swEl);
+                }else{
+                    this.hideElement(swEl);
+                }
             }
         }
     },
