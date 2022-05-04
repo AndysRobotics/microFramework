@@ -19,6 +19,15 @@ const frameWork = {
         return data;
     },
 
+    getDataFromElement(el){
+        if(!el || typeof(el.getAttribute)!='function' || !el.style) return { index: null, param: null};
+        let path = el.getAttribute('data-param');
+        return {
+            index: el.getAttribute('data-each-index'),
+            param: this.getDataByPath(path),
+        }
+    },
+
     showElement(el){
         if(!el || typeof(el.getAttribute)!='function' || !el.style) return;
         el.style.display = el.getAttribute('data-show') || 'block';
@@ -46,22 +55,24 @@ const frameWork = {
             el.removeAttribute(loopProccessedTempAttr);
         }
 
-        function fixItemCondition(attribute, item, forcondition, index){
-            if(!item || typeof(item.getAttribute)!='function' || !forcondition) return;
-            let len = forcondition.length;
+        function fixItemCondition(attribute, item, forCondition, index){
+            if(!item || typeof(item.getAttribute)!='function' || !forCondition) return;
+            let len = forCondition.length;
             let prevAttr = item.getAttribute(attribute);
-            if(prevAttr && prevAttr.substring(0, len+1)==forcondition + '.'){
-                prevAttr = prevAttr.replace(forcondition + '.', forcondition + '.' + index + '.')
+            if(prevAttr==forCondition){
+                item.setAttribute(attribute, prevAttr + '.' + index);
+            }else if(prevAttr && prevAttr.substring(0, len+1)==forCondition + '.'){
+                prevAttr = prevAttr.replace(forCondition + '.', forCondition + '.' + index + '.')
                 item.setAttribute(attribute, prevAttr);
             }
         }
 
         function fixItemConditions(item, forcondition, index){
             if(!item || typeof(item.getAttribute)!='function') return;
-            let attributes = ['data-if', 'data-for', 'data-show', 'data-innerHtml', 'data-switch'];
+            let attributes = ['data-if', 'data-for', 'data-show', 'data-innerHtml', 'data-switch', 'data-param'];
             for(let attribute of attributes){
                 fixItemCondition(attribute, item, forcondition, index);
-                for(let child of item.querySelectorAll('[' + attribute + ']')){
+                for(let child of item.querySelectorAll(':scope [' + attribute + ']')){
                     fixItemCondition(attribute, child, forcondition, index);
                 }
             }
@@ -187,5 +198,3 @@ const frameWork = {
         }
     },
 }
-
-frameWork.render();

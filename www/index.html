@@ -26,7 +26,7 @@
                 </div>
                 <div data-if="devices.items.length=0">No Device Items</div>
                 <div data-for="devices.items">
-                    <div data-each>
+                    <div data-each onclick="deviceItemClick(this)" data-param="devices">
                         <div data-innerHtml="devices.items.name"></div>
                     </div>
                 </div>
@@ -36,5 +36,13 @@
             Loading, please wait...
         </div>
         <script src="/js/client.js"></script>
+        <script>
+            frameWork.render();
+
+            function deviceItemClick(el){
+                let data = frameWork.getDataFromElement(el);
+                console.log('Deveice item click', el, data);
+            }
+        </script>
     </body>
 </html>
