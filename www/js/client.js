@@ -8,7 +8,7 @@ const frameWork = {
     maxLoopItterations: 20,
     loopItterations: 0,
 
-    getDataByPath: function(path){
+    getDataByPath: function(path=''){
         let data = this.data;
         if(!path || !data) return undefined;
         let paths = path.split('.');
