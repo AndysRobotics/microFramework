@@ -29,6 +29,14 @@ const frameWork = {
         el.style.display = 'none';
     },
 
+    render: function(){
+        this._renderForLoops();
+        this._renderSwithes();
+        this._renderIfs();
+        this._renderInnerHtml();
+        this.lastRender = Date.now();
+    },
+
     _renderForLoops: function(){
         let loopProccessedTempAttr = 'data-loop-processed';
         this.loopItterations = 0;
@@ -131,11 +139,9 @@ const frameWork = {
         }
     },
 
-    render: function(){
-        this._renderForLoops();
-        this._renderSwithes();
-
-        function testCondition(self, condition){
+    _renderIfs: function(){
+        let self = this;
+        function testCondition(condition){
             if(self.getDataByPath(condition)) return true;
 
             let parts = condition.split('!=');
@@ -161,13 +167,15 @@ const frameWork = {
 
         for(let el of document.querySelectorAll('[data-if]')){
             let condition = el.getAttribute('data-if');
-            if(testCondition(this, condition)){
+            if(testCondition(condition)){
                 this.showElement(el);
             }else{
                 this.hideElement(el);
             }
         }
+    },
 
+    _renderInnerHtml: function(){
         for(let el of document.querySelectorAll('[data-innerHtml]')){
             let condition = el.getAttribute('data-innerHtml');
             let data = this.getDataByPath(condition);
@@ -177,8 +185,6 @@ const frameWork = {
                 el.innerHTML = el.getAttribute('data-unknown') || '';
             }
         }
-
-        this.lastRender = Date.now();
     },
 }
 
