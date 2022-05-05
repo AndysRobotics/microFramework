@@ -235,3 +235,18 @@ Will become the following after the render
 <div class="Tab active" data-class-if="activeTab=Tab2;active">Tab 2</div>
 <div class="Tab" data-class-if="activeTab=Tab3;active">Tab 3</div>
 ```
+
+---
+## To add to readme
+* data-for
+* data-each
+* data-each-index
+* data-switch
+* data-default
+* data-case
+* data-value
+* data-group
+* data-param
+* mfw methods
+* reading inputs
+* onclick and other listeners
