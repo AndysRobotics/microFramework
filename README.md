@@ -51,7 +51,16 @@ The data object can be set before the call to `mfw.init()` in the example below 
 
 ## Data tags
 
-### data-if
+###  - available on any html tag that's got conditional rendering
+
+This tag allows an overide of the display of an element when it has been displays by the render. The renderer will hide elements by setting the css property `display` to `'none'`. By default the renderer will show an element by setting the css property `display` to `'block'`.
+
+```html
+<div data-if="loading">This will render as a block when 'mfw.data.loading' it truthy</div>
+<div data-if="loading" data-show="inline-block">This will render as an inline-block when 'mfw.data.loading' it truthy</div>
+```
+
+### data-if - available on any html tag - supports data binding
 
 The `data-if` attribute can be used to show elements based on conditions mapped in the `mfw.data` on a render.
 ```html
@@ -73,3 +82,4 @@ Further examples
 <div data-if="test.hello.world<2">Will show if mfw.data.test.hello.world is less than 2</div>
 <div data-if="test.hello.world<=2">Will show if mfw.data.test.hello.world is less than or equal to 2</div>
 ```
+
