@@ -55,6 +55,7 @@ All interaction between the engine and the DOM is driven by `data-` attribute ta
 Current tags
 * data-innerHtml - bind data from `mfw.data` object to the html
 * data-unknown - used if `data-innerHtml` is empty or not found
+* data-src - bind data from `mfw.data` object to element's src attribute
 * data-show - used to change the override the default display property `block` being used to show an element 
 * data-if - used to display an element based on a condition met from `mfw.data` object
 * data-class - used to bind from `mfw.data` object to an elements class
@@ -108,6 +109,28 @@ Will become the following after the render
 <div data-if="test.hello.world">test data</div>
 <div data-if="test2.hello.world"></div>
 <div data-if="test2.hello.world" data-unknown="Data does not exist">Data does not exist</div>
+```
+
+### data-src
+
+Available on any html tag that supports src attribute (ie images). The value of this attribute will be a path within `mfw.data`.
+
+Upon each render, the entire contents of the elements src attribute will be replaced with the data matched by the data path on the tag.
+
+```html
+<img data-src="test.hello.world" />
+<script>
+    mfw.data = {
+        test:{ hello: { world: "/images/test.jpg" } }
+    }
+    mfw.render();
+</script>
+```
+
+Will become the following after the render
+
+```html
+<img data-src="/images/test.jpg" />
 ```
 
 ### data-show - available on any html tag that's got conditional rendering
