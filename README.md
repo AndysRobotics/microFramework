@@ -51,6 +51,15 @@ The data object can be set before the call to `mfw.init()` in the example below 
 
 ## Data tags
 
+All interaction between the engine and the DOM is driven by `data-` attribute tags.
+Current tags
+* data-innerHtml - bind data from `mfw.data` object to the html
+* data-unknown - used if `data-innerHtml` is empty or not found
+* data-show - used to change the override the default display property `block` being used to show an element 
+* data-if - used to display an element based on a condition met from `mfw.data` object
+* data-class - used to bind from `mfw.data` object to an elements class
+* data-class-if - used to give an element an additional class name based on a condition met from `mfw.data` object
+
 ### data-innerHtml
 
 Available on any html tag that supports innerHtml (ie not inputs, images ect). The value of this attribute will be a path within `mfw.data`.
@@ -75,7 +84,9 @@ Will become the following after the render
 <div data-if="test2.hello.world"></div>
 ```
 
-### data-unknown - available on any html tag that's got data-innerHtml attribute
+### data-unknown
+
+Available on any html tag that has got the `data-innerHtml` attribute. The value of this attribute will be treated as a string.
 
 Upon each render, if the looked up data from `data-innerHtml` path following is an empty string, unresolvable path, null or undefined the elements innerHtml will be replace with the string bound to this attribute.
 
@@ -101,6 +112,8 @@ Will become the following after the render
 
 ### data-show - available on any html tag that's got conditional rendering
 
+Available on any html tag that has got a conditional attribute (`data-if` `data-for` `data-src` `data-default` `data-switch` `data-case`). The value of this attribute will be treated as a string.
+
 This tag allows an overide of the display of an element when it has been displays by the render. The renderer will hide elements by setting the css property `display` to `'none'`. By default the renderer will show an element by setting the css property `display` to `'block'`.
 
 ```html
@@ -108,7 +121,9 @@ This tag allows an overide of the display of an element when it has been display
 <div data-if="loading" data-show="inline-block">This will render as an inline-block when 'mfw.data.loading' it truthy</div>
 ```
 
-### data-if - available on any html tag - supports data binding
+### data-if
+
+Available on any html tag. The value of this attribute will be a path within `mfw.data`.
 
 The `data-if` attribute can be used to show elements based on conditions mapped in the `mfw.data` on a render.
 ```html
@@ -131,4 +146,69 @@ Further examples
 <div data-if="test.hello.world<=2">Will show if mfw.data.test.hello.world is less than or equal to 2</div>
 ```
 
-### data-class - available on any html tag - supports data binding
+### data-class
+
+Available on any html tag. The value of this attribute will be a path within `mfw.data`.
+
+Upon each render, the entire contents of the elements class will be replaced with the data matched by the data path on the tag.
+
+---
+**NOTE**
+All classes on the element will be removed prior the looked up class matching. If complex class combinations are required these need proccessing and adding to the mapped data.
+
+---
+
+```html
+<div data-if="test.hello.world"></div>
+<div data-if="test.hello.world" class="red"></div>
+<div data-if="test2.hello.world"></div>
+<div data-if="test2.hello.world" class="red"></div>
+<script>
+    mfw.data = {
+        test:{ hello: { world: "blue class2" } }
+    }
+    mfw.render();
+</script>
+```
+
+Will become the following after the render
+
+```html
+<div data-if="test.hello.world" class="blue class2"></div>
+<div data-if="test.hello.world" class="blue class2"></div>
+<div data-if="test2.hello.world"></div>
+<div data-if="test2.hello.world"></div>
+```
+
+### data-class-if
+
+Available on any html tag. The value of this attribute will be a path within `mfw.data` and the class name to be manipulated.
+
+This tag is split in 2 seperated by a semicolon ';'. The first half is the matching condition following the format of `data-if`, the second is a string representing the conditional class name.
+
+---
+**NOTE**
+Each element can only hav 1 `data-class-if` tag. If complex class combinations are required these need proccessing and adding to the mapped data.
+
+---
+
+```html
+<div class="Tab" data-class-if="activeTab=Tab1;active">Tab 1</div>
+<div class="Tab" data-class-if="activeTab=Tab2;active">Tab 2</div>
+<div class="Tab" data-class-if="activeTab=Tab3;active">Tab 3</div>
+        
+<script>
+    mfw.data = {
+        activeTab: 'Tab2'
+    }
+    mfw.render();
+</script>
+```
+
+Will become the following after the render
+
+```html
+<div class="Tab" data-class-if="activeTab=Tab1;active">Tab 1</div>
+<div class="Tab active" data-class-if="activeTab=Tab2;active">Tab 2</div>
+<div class="Tab" data-class-if="activeTab=Tab3;active">Tab 3</div>
+```
