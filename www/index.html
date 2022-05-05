@@ -24,7 +24,7 @@
                         This device is a camera
                     </div>
                 </div>
-                <div data-if="devices.items.length=0">No Device Items</div>
+                <div data-if="!devices.items.length">No Device Items</div>
                 <div data-for="devices.items">
                     <div data-each onclick="deviceItemClick(this)" data-param="devices">
                         <div data-innerHtml="devices.items.name"></div>
@@ -44,7 +44,7 @@
         <script src="/js/client.js"></script>
         <script>
             mfw.data = {
-                form2: {
+                form: {
                     name: 'TestInput',
                 },
                 loading: true, test: { show: true }, devices: [

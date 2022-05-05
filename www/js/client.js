@@ -205,7 +205,11 @@ const mfw = {
     _renderIfs: function(){
         let self = this;
         function testCondition(condition){
+            if(!condition || typeof(condition)!='string') return false;
             if(self.getDataByPath(condition)) return true;
+            if(condition.charAt(0)=='!'){
+                if(!self.getDataByPath(condition.substring(1))) return true;
+            }
 
             let parts = condition.split('!=');
             if(parts.length==2) return (self.getDataByPath(parts[0])!=parts[1]);
