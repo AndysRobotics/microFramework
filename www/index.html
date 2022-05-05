@@ -36,13 +36,16 @@
         <div data-if="loading">
             Loading, please wait...
         </div>
+        <input type="text" data-value="form.name" name='personName' data-group="testGroup"><br>
+        <div data-innerHtml="form.name"></div>
+        <textarea data-value="form.info" name='personInfo' data-group="testGroup"></textarea>
         <script src="/js/client.js"></script>
         <script>
-            frameWork.render();
+            mfw.init();
 
             function deviceItemClick(el){
-                let data = frameWork.getDataFromElement(el);
-                console.log('Deveice item click', el, data);
+                let data = mfw.getDataFromElement(el);
+                console.log('Device item click', el, data);
             }
         </script>
     </body>

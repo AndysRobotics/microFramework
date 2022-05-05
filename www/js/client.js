@@ -1,6 +1,10 @@
-const frameWork = {
+const mfw = {
     engine: '1.0.000',
-    data: { loading: true, test: { show: true }, devices: [
+    data: {
+        form2: {
+            name: 'TestInput',
+        },
+        loading: true, test: { show: true }, devices: [
         { name: 'Hello', type: 'Cam', items: [{ name: "world1", className: 'testClass' }, { name: "world2" }] },
         { name: 'NoItems', type: 'Cam2', items: [] },
     ] },
@@ -17,6 +21,37 @@ const frameWork = {
             data = data[path];
         }
         return data;
+    },
+
+    setDataByPath: function(path='', value){
+        if(!path || typeof(path)!='string') return;
+        let paths = path.split('.');
+        if(!paths.length) return;
+        let data = this.data;
+        if(paths.length==1){
+            data[paths[0]] = value;
+        }else{
+            for(let i=0; i<(paths.length-1); i++){
+                let key = paths[i];
+                if(typeof(data[key])!='object') data[key]={};
+                data = data[key];
+            }
+            let key = paths[paths.length-1];
+            data[key] = value;
+        }
+    },
+
+    getDataFromInputGroup(groupName){
+        if(!groupName || typeof(groupName)!='string') return {};
+        let result = {};
+        for(let input of document.querySelectorAll('[data-group]')){
+            let key = input.name;
+            if(key){
+                if(input.type=="checkbox") result[key] = !!input.checked;
+                else result[key] = input.value;
+            }
+        }
+        return result;
     },
 
     getDataFromElement(el){
@@ -38,6 +73,13 @@ const frameWork = {
         el.style.display = 'none';
     },
 
+    init: function(){
+        this.render();
+        document.addEventListener('input', (event)=>{
+            this._handleDocumentInteraction(event);
+        });
+    },
+
     render: function(){
         this._renderForLoops();
         this._renderSwithes();
@@ -45,7 +87,22 @@ const frameWork = {
         this._renderIfs();
         this._renderInnerHtml();
         this._renderImageSrcs();
+        this._renderInputValues();
         this.lastRender = Date.now();
+    },
+
+    _handleDocumentInteraction: function(event){
+        if(!event || !event.target || typeof(event.target.getAttribute)!='function') return;
+        if(event.target.tagName!='INPUT' && event.target.tagName!='TEXTAREA') return;
+        if(!event.target.getAttribute('data-value')) return;
+        let path = event.target.getAttribute('data-value');
+        if(!path) return;
+        let newValue = event.target.value;
+        let oldValue = this.getDataByPath(path)
+        if(event.target.type=='checkbox') newValue = !!event.target.checked;
+        if(oldValue===newValue) return;
+        this.setDataByPath(path, newValue);
+        this.render();
     },
 
     _renderForLoops: function(){
@@ -218,6 +275,18 @@ const frameWork = {
         for(let el of document.querySelectorAll('[data-class]')){
             let path = el.getAttribute('data-class');
             el.className = this.getDataByPath(path) || '';
+        }
+    },
+
+    _renderInputValues: function(){
+        for(let el of document.querySelectorAll('[data-value]')){
+            let path = el.getAttribute('data-value');
+            if(el.type=="checkbox"){
+                if(this.getDataByPath(path)) el.setAttribute('checked');
+                else el.removeAttribute('checked');
+            }else{
+                el.value = this.getDataByPath(path) || '';
+            }
         }
     },
 }
