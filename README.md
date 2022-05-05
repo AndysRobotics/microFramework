@@ -24,9 +24,7 @@ The `mfw.data` object can contain any structure, including nested branches, arra
 * www/js/microFramework.js - The full micro framework engine
 * www/js/mfw1.0.000 - Minified version of the engine
 
-## How use
-
-### Including the library and initialising
+## Including the library and initialising
 
 Include the following in the `<head></head>`. **Do not put these in a style sheet** or the app will render the objects incorectly whilst loading the stylesheet. Having these in the `<head></head>` will ensure correct operation.
 ```html
@@ -49,4 +47,29 @@ The data object can be set before the call to `mfw.init()` in the example below 
 
     mfw.init();
 </script>
+```
+
+## Data tags
+
+### data-if
+
+The `data-if` attribute can be used to show elements based on conditions mapped in the `mfw.data` on a render.
+```html
+<div data-if="loading">Loading, Please Wait...</div>
+```
+The render will follow the path assigned to the `data-if` attribute through the `mfw.data` object. This path can traverse the branches of the `mfw.data` object. For example `data-if="test.hello.world"` will use the value of `mfw.data.test.hello.world` and if the path is broken this will resolve to `undefined`.
+
+The `data-if` attribute can also support very basic comparissons however the left hand side of the operand will always be mapped to the `mfw.data` object. The right hand side will be evaluated as a string or number. The renderer also supports a ! infront of a mapping. For example `data-if="!loading"`.
+
+Further examples
+```html
+<div data-if="test.hello.world">Will show if mfw.data.test.hello.world is truethy</div>
+<div data-if="!test.hello.world">Will show if mfw.data.test.hello.world is falsey</div>
+<div data-if="test.hello.world=2">Will show if mfw.data.test.hello.world is 2 or '2'</div>
+<div data-if="test.hello.world=test.hello.again">Will show if mfw.data.test.hello.world is the string 'test.hello.again'</div>
+<div data-if="test.hello.world!=2">Will show if mfw.data.test.hello.world is not 2 or '2'</div>
+<div data-if="test.hello.world>2">Will show if mfw.data.test.hello.world is greater than 2</div>
+<div data-if="test.hello.world>=2">Will show if mfw.data.test.hello.world is greater than or equal to 2</div>
+<div data-if="test.hello.world<2">Will show if mfw.data.test.hello.world is less than 2</div>
+<div data-if="test.hello.world<=2">Will show if mfw.data.test.hello.world is less than or equal to 2</div>
 ```
