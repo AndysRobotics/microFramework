@@ -95,8 +95,8 @@ const mfw = {
         let path = event.target.getAttribute('data-value');
         if(!path) return;
         let newValue = event.target.value;
-        let oldValue = this.getDataByPath(path)
         if(event.target.type=='checkbox') newValue = !!event.target.checked;
+        let oldValue = this.getDataByPath(path)
         if(oldValue===newValue) return;
         this.setDataByPath(path, newValue);
         this.render();
