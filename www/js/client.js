@@ -1,13 +1,6 @@
 const mfw = {
     engine: '1.0.000',
-    data: {
-        form2: {
-            name: 'TestInput',
-        },
-        loading: true, test: { show: true }, devices: [
-        { name: 'Hello', type: 'Cam', items: [{ name: "world1", className: 'testClass' }, { name: "world2" }] },
-        { name: 'NoItems', type: 'Cam2', items: [] },
-    ] },
+    data: {},
     lastRender: 0,
     maxLoopItterations: 20,
     loopItterations: 0,
@@ -249,7 +242,7 @@ const mfw = {
         for(let el of document.querySelectorAll('[data-innerHtml]')){
             let condition = el.getAttribute('data-innerHtml');
             let data = this.getDataByPath(condition);
-            if(data){
+            if(data || data===0 || data===false){
                 el.innerHTML = data;
             }else{
                 el.innerHTML = el.getAttribute('data-unknown') || '';
@@ -282,7 +275,7 @@ const mfw = {
         for(let el of document.querySelectorAll('[data-value]')){
             let path = el.getAttribute('data-value');
             if(el.type=="checkbox"){
-                if(this.getDataByPath(path)) el.setAttribute('checked');
+                if(this.getDataByPath(path)) el.setAttribute('checked', '');
                 else el.removeAttribute('checked');
             }else{
                 el.value = this.getDataByPath(path) || '';
