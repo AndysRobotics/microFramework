@@ -3,7 +3,6 @@ const mfw = {
     data: {},
     lastRender: 0,
     maxLoopItterations: 20,
-    loopItterations: 0,
     bindableAttributes: [
         'data-if', 'data-for', 'data-innerHtml',
         'data-switch', 'data-value', 'data-param',
@@ -134,7 +133,6 @@ const mfw = {
     _renderForLoops: function(){
         let self = this;
         let loopProccessedTempAttr = 'data-loop-processed';
-        this.loopItterations = 0;
         for(let item of document.querySelectorAll('[data-each-index]')) item.remove();
         
         for(let el of document.querySelectorAll('[data-for]')){
@@ -163,7 +161,8 @@ const mfw = {
             }
         }
 
-        while(this.loopItterations<this.maxLoopItterations){
+        let loopItterations=0;
+        while(loopItterations<this.maxLoopItterations){
             let newLoopFound = false;
 
             for(let el of document.querySelectorAll('[data-for]')){
@@ -188,14 +187,14 @@ const mfw = {
                 }
             }
             if(!newLoopFound) break;
-            this.loopItterations++;
+            loopItterations++;
         }
             
         for(let el of document.querySelectorAll('[data-for]')){
             el.removeAttribute(loopProccessedTempAttr);
         }
 
-        if(this.loopItterations==this.maxLoopItterations){
+        if(loopItterations==this.maxLoopItterations){
             console.error('Max loop itterations reached');
         }
     },
