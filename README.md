@@ -51,13 +51,15 @@ The data object can be set before the call to `mfw.init()` in the example below 
 
 ## Data tags
 
-### data-innerHtml - available on any html tag that supports innerHtml (ie not inputs) - supports data binding
+### data-innerHtml
+
+Available on any html tag that supports innerHtml (ie not inputs, images ect). The value of this attribute will be a path within `mfw.data`.
 
 Upon each render, the entire contents of the elements innerHtml will be replaced with the data matched by the data path on the tag.
 
 ```html
-<div data-if="test.hello.world">This text will become 'test data' upon render</div>
-<div data-if="test2.hello.world">This text will become empty upon render</div>
+<div data-if="test.hello.world"></div>
+<div data-if="test2.hello.world"></div>
 <script>
     mfw.data = {
         test:{ hello: { world: "test data" } }
@@ -78,9 +80,9 @@ Will become the following after the render
 Upon each render, if the looked up data from `data-innerHtml` path following is an empty string, unresolvable path, null or undefined the elements innerHtml will be replace with the string bound to this attribute.
 
 ```html
-<div data-if="test.hello.world">This text will become 'test data' upon render</div>
-<div data-if="test2.hello.world">This text will become empty upon render</div>
-<div data-if="test2.hello.world" data-unknown="Data does not exist">This text will become 'Data does not exist' upon render</div>
+<div data-if="test.hello.world"></div>
+<div data-if="test2.hello.world"></div>
+<div data-if="test2.hello.world" data-unknown="Data does not exist"></div>
 <script>
     mfw.data = {
         test:{ hello: { world: "test data" } }
