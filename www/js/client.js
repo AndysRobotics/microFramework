@@ -4,6 +4,11 @@ const mfw = {
     lastRender: 0,
     maxLoopItterations: 20,
     loopItterations: 0,
+    bindableAttributes: [
+        'data-if', 'data-for', 'data-innerHtml',
+        'data-switch', 'data-value', 'data-param',
+        'data-src', 'data-class', 'data-class-if',
+    ],
 
     getDataByPath: function(path=''){
         let data = this.data;
@@ -98,7 +103,36 @@ const mfw = {
         this.render();
     },
 
+    _testCondition: function(condition){
+        if(!condition || typeof(condition)!='string') return false;
+        if(this.getDataByPath(condition)) return true;
+        if(condition.charAt(0)=='!'){
+            if(!this.getDataByPath(condition.substring(1))) return true;
+        }
+
+        let parts = condition.split('!=');
+        if(parts.length==2) return (this.getDataByPath(parts[0])!=parts[1]);
+
+        parts = condition.split('>=');
+        if(parts.length==2) return (this.getDataByPath(parts[0])>=parts[1]);
+
+        parts = condition.split('<=');
+        if(parts.length==2) return (this.getDataByPath(parts[0])<=parts[1]);
+
+        parts = condition.split('=');
+        if(parts.length==2) return (this.getDataByPath(parts[0])==parts[1]);
+
+        parts = condition.split('<');
+        if(parts.length==2) return (this.getDataByPath(parts[0])<parts[1]);
+
+        parts = condition.split('>');
+        if(parts.length==2) return (this.getDataByPath(parts[0])>parts[1]);
+
+        return false;
+    },
+
     _renderForLoops: function(){
+        let self = this;
         let loopProccessedTempAttr = 'data-loop-processed';
         this.loopItterations = 0;
         for(let item of document.querySelectorAll('[data-each-index]')) item.remove();
@@ -121,8 +155,7 @@ const mfw = {
 
         function fixItemConditions(item, forcondition, index){
             if(!item || typeof(item.getAttribute)!='function') return;
-            let attributes = ['data-if', 'data-for', 'data-innerHtml', 'data-switch', 'data-param', 'data-src', 'data-class'];
-            for(let attribute of attributes){
+            for(let attribute of self.bindableAttributes){
                 fixItemCondition(attribute, item, forcondition, index);
                 for(let child of item.querySelectorAll(':scope [' + attribute + ']')){
                     fixItemCondition(attribute, child, forcondition, index);
@@ -203,38 +236,9 @@ const mfw = {
     },
 
     _renderIfs: function(){
-        let self = this;
-        function testCondition(condition){
-            if(!condition || typeof(condition)!='string') return false;
-            if(self.getDataByPath(condition)) return true;
-            if(condition.charAt(0)=='!'){
-                if(!self.getDataByPath(condition.substring(1))) return true;
-            }
-
-            let parts = condition.split('!=');
-            if(parts.length==2) return (self.getDataByPath(parts[0])!=parts[1]);
-
-            parts = condition.split('>=');
-            if(parts.length==2) return (self.getDataByPath(parts[0])>=parts[1]);
-
-            parts = condition.split('<=');
-            if(parts.length==2) return (self.getDataByPath(parts[0])<=parts[1]);
-
-            parts = condition.split('=');
-            if(parts.length==2) return (self.getDataByPath(parts[0])==parts[1]);
-
-            parts = condition.split('<');
-            if(parts.length==2) return (self.getDataByPath(parts[0])<parts[1]);
-
-            parts = condition.split('>');
-            if(parts.length==2) return (self.getDataByPath(parts[0])>parts[1]);
-
-            return false;
-        }
-
         for(let el of document.querySelectorAll('[data-if]')){
             let condition = el.getAttribute('data-if');
-            if(testCondition(condition)){
+            if(this._testCondition(condition)){
                 this.showElement(el);
             }else{
                 this.hideElement(el);
@@ -272,6 +276,19 @@ const mfw = {
         for(let el of document.querySelectorAll('[data-class]')){
             let path = el.getAttribute('data-class');
             el.className = this.getDataByPath(path) || '';
+        }
+
+        for(let el of document.querySelectorAll('[data-class-if]')){
+            let condition = el.getAttribute('data-class-if');
+            if(!condition || typeof(condition)!='string') continue;
+            let parts = condition.split(';');
+            if(parts.length!=2) continue;
+            condition = parts[0];
+            let className = parts[1];
+            el.classList.remove(className);
+            if(this._testCondition(condition)){
+                el.classList.add(className);
+            }
         }
     },
 

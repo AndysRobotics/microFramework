@@ -12,6 +12,19 @@
         </style>
     </head>
     <body>
+        <div style='display: inline-block;' class="Tab" data-class-if="activeTab=Tab1;active" onclick="changeTab('Tab1')">Tab 1</div>
+        <div style='display: inline-block;' class="Tab" data-class-if="activeTab=Tab2;active" onclick="changeTab('Tab2')">Tab 2</div>
+        <div style='display: inline-block;' class="Tab" data-class-if="activeTab=Tab3;active" onclick="changeTab('Tab3')">Tab 3</div>
+        <div data-if="activeTab=Tab1">
+            Data inside tab 1
+        </div>
+        <div data-if="activeTab=Tab2">
+            Data inside tab 2
+        </div>
+        <div data-if="activeTab=Tab3">
+            Data inside tab 3
+        </div>
+
         <div data-show="inline-block" data-innerHtml="test.name" data-unknown="Unknown"></div>
         <div data-for="devices">
             <div data-each>
@@ -44,6 +57,7 @@
         <script src="/js/client.js"></script>
         <script>
             mfw.data = {
+                activeTab: 'Tab1',
                 form: {
                     name: 'TestInput',
                 },
@@ -58,6 +72,11 @@
             function deviceItemClick(el){
                 let data = mfw.getDataFromElement(el);
                 console.log('Device item click', el, data);
+            }
+
+            function changeTab(newTab){
+                mfw.data.activeTab=newTab;
+                mfw.render();
             }
         </script>
     </body>
