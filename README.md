@@ -51,7 +51,38 @@ The data object can be set before the call to `mfw.init()` in the example below 
 
 ## Data tags
 
-###  - available on any html tag that's got conditional rendering
+### data-innerHtml - available on any html tag that supports innerHtml (ie not inputs) - supports data binding
+
+Upon each render, the entire contents of the elements innerHtml will be replaced with the data matched by the data path on the tag.
+
+```html
+<script>
+    mfw.data = {
+        test:{ hello: { world: "test data" } }
+    }
+    mfw.render();
+</script>
+<div data-if="test.hello.world">This text will become 'test data' upon render</div>
+<div data-if="test2.hello.world">This text will become empty upon render</div>
+```
+
+### data-unknown - available on any html tag that's got data-innerHtml attribute
+
+Upon each render, if the looked up data from `data-innerHtml` path following is an empty string, unresolvable path, null or undefined the elements innerHtml will be replace with the string bound to this attribute.
+
+```html
+<script>
+    mfw.data = {
+        test:{ hello: { world: "test data" } }
+    }
+    mfw.render();
+</script>
+<div data-if="test.hello.world">This text will become 'test data' upon render</div>
+<div data-if="test2.hello.world">This text will become empty upon render</div>
+<div data-if="test2.hello.world" data-unknown="Data does not exist">This text will become 'Data does not exist' upon render</div>
+```
+
+### data-show - available on any html tag that's got conditional rendering
 
 This tag allows an overide of the display of an element when it has been displays by the render. The renderer will hide elements by setting the css property `display` to `'none'`. By default the renderer will show an element by setting the css property `display` to `'block'`.
 
@@ -83,3 +114,4 @@ Further examples
 <div data-if="test.hello.world<=2">Will show if mfw.data.test.hello.world is less than or equal to 2</div>
 ```
 
+### data-class - available on any html tag - supports data binding
