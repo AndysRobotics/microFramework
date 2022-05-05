@@ -66,6 +66,13 @@ Upon each render, the entire contents of the elements innerHtml will be replaced
 </script>
 ```
 
+Will become the following after the render
+
+```html
+<div data-if="test.hello.world">test data</div>
+<div data-if="test2.hello.world"></div>
+```
+
 ### data-unknown - available on any html tag that's got data-innerHtml attribute
 
 Upon each render, if the looked up data from `data-innerHtml` path following is an empty string, unresolvable path, null or undefined the elements innerHtml will be replace with the string bound to this attribute.
@@ -80,6 +87,14 @@ Upon each render, if the looked up data from `data-innerHtml` path following is 
     }
     mfw.render();
 </script>
+```
+
+Will become the following after the render
+
+```html
+<div data-if="test.hello.world">test data</div>
+<div data-if="test2.hello.world"></div>
+<div data-if="test2.hello.world" data-unknown="Data does not exist">Data does not exist</div>
 ```
 
 ### data-show - available on any html tag that's got conditional rendering
