@@ -1,9 +1,9 @@
 # Micro Javascript Web App Framework
 
-> **TLDR;** This is a lightweight engine for DOM manulation. Suporting 2 way-data binding, loops, switches and other features.
-> A global object `mfw` will be created and all data bound to the UI lives in `mfw.data`. 
-> Every external change to `mfw.data` requires a call to `mfw.render()`. Inputs will automatically execute a render.
-> `mfw` has methods to aid in data gathering.
+> **TLDR;** This is a lightweight engine for DOM manulation. Suporting 2 way-data binding, loops, switches and other features.<br>
+> A global object `mfw` will be created and all data bound to the UI lives in `mfw.data`.<br>
+> Every external change to `mfw.data` requires a call to `mfw.render()`. Inputs will automatically execute a render.<br>
+> `mfw` has methods to aid in data gathering.<br>
 > Examples can be found in www/
 
 ---
@@ -77,6 +77,9 @@ The data object can be set before the call to `mfw.init()` in the example below 
 
 All interaction between the engine and the DOM is driven by `data-` attribute tags.
 
+> **NOTE** html elements with the following tags will have their `display` style property set on each render<br>
+> `data-if` `data-for` `data-each` `data-none` `data-src` `data-switch` `data-default` `data-case`
+
 * data-innerHtml - bind data from `mfw.data` object to the html
 * data-unknown - used if `data-innerHtml` is empty or not found
 * data-src - bind data from `mfw.data` object to element's src attribute
@@ -88,8 +91,6 @@ All interaction between the engine and the DOM is driven by `data-` attribute ta
 * data-case - element to show on a matched switch case
 * data-default - default element to display on unmatches switch cases
 
-> **NOTE** html elements with the following tags will have their `display` style property set on each render
-> `data-if` `data-for` `data-each` `data-none` `data-src` `data-switch` `data-default` `data-case`
 ---
 
 ### data-innerHtml
