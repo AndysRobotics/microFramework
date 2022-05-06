@@ -236,14 +236,52 @@ Will become the following after the render
 <div class="Tab" data-class-if="activeTab=Tab3;active">Tab 3</div>
 ```
 
+### data-switch, data-default & data-case
+
+Available on any html tag. The value of `data-switch` attribute will be a path within `mfw.data`. The value of `data-case` will be treated as a string.
+
+`data-default` is optional, if a no `data-case` child elements match and `data-default` child element doesn't exist, the `data-switch` element will be hidden. 
+
+* `data-switch` - path to the data to be evaluated and matched to a child element.
+* `data-case` - string to match to.
+* `data-default` - has no value, this will be the matched element if the data switch path doesn't resolve or doesn't match any `data-case`.
+
+---
+**NOTE**
+The renderer will only evaluate immediate  children nodes of the switch element looking for `data-case` or `data-default`. This is to allow nested switch usage.
+
+---
+
+```html
+<div data-switch="test.hello.world">
+    <div data-default>World not found</div>
+    <div data-case="blue">The world is blue</div>
+    <div data-case="red">The world is red</div>
+</div>
+        
+<script>
+    mfw.data = {
+        test:{ hello: { world: "blue" } }
+    }
+    mfw.render();
+</script>
+```
+
+Will become the following after the render
+
+```html
+<div data-switch="test.hello.world">
+    <div data-default>World not found</div>
+    <div data-case="blue" style="display:block">The world is blue</div>
+    <div data-case="red">The world is red</div>
+</div>
+```
+
 ---
 ## To add to readme
 * data-for
 * data-each
 * data-each-index
-* data-switch
-* data-default
-* data-case
 * data-value
 * data-group
 * data-param
