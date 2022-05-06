@@ -52,11 +52,14 @@ const mfw = {
     },
 
     getDataFromElement(el){
-        if(!el || typeof(el.getAttribute)!='function' || !el.style) return { index: null, param: null};
+        if(!el || typeof(el.getAttribute)!='function') return { index: null, api: null, param: null, groupData: {} };
         let path = el.getAttribute('data-param');
+        let groupName = el.getAttribute('data-group');
         return {
             index: el.getAttribute('data-each-index'),
+            api: el.getAttribute('data-api'),
             param: this.getDataByPath(path),
+            groupData: this.getDataFromInputGroup(groupName),
         }
     },
 
