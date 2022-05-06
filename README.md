@@ -5,11 +5,8 @@ This engine is 100% javascript with no dependencies and no server side processin
 It is very lightweight (v1.0.000 is 11.2KB or 5.6KB minified) and will only render when required. There is no virtual DOM, all interaction with the DOM is via `data-` attribute tags.
 Only 1 event listener is registered to the DOM keeping CPU/Memory requirements low.
 
----
-**NOTE**
-This engine is not recommended for very large project. It doesn't have components, and apart from for loops (explained bellow) all html objects will exist at all times.
+> **NOTE** This engine is not recommended for very large project. It doesn't have components, and apart from for loops (explained bellow) all html objects will exist at all times.
 
----
 
 By default, the engine will be a javascript object in the global namespace called `mfw`.
 
@@ -17,12 +14,16 @@ All html binding and rendering is based on a `data` object within `mfw`. Any cus
 
 The `mfw.data` object can contain any structure, including nested branches, arrays of objects. If a mapping does not exist in the structure the system will not error. Any components of the `mfw.data` that are bound to input or text areas will create all branches when data is added to the input. All mapping/binding is done by using string representations of the path.
 
+---
+
 ## Files
 * server.js - Not required for live system, this is a simple node web server to serve files located in www
 * www/index.html - Simple example of features
 * www/css/style.css - Style sheet for example - not required for framework to operate
 * www/js/microFramework.js - The full micro framework engine
 * www/js/mfw1.0.000 - Minified version of the engine
+
+---
 
 ## Including the library and initialising
 
@@ -49,6 +50,8 @@ The data object can be set before the call to `mfw.init()` in the example below 
 </script>
 ```
 
+---
+
 ## Data tags
 
 All interaction between the engine and the DOM is driven by `data-` attribute tags.
@@ -60,6 +63,11 @@ Current tags
 * data-if - used to display an element based on a condition met from `mfw.data` object
 * data-class - used to bind from `mfw.data` object to an elements class
 * data-class-if - used to give an element an additional class name based on a condition met from `mfw.data` object
+* data-switch - used to allow a DOM switch statement
+* data-case - element to show on a matched switch case
+* data-default - default element to display on unmatches switch cases
+
+---
 
 ### data-innerHtml
 
@@ -84,6 +92,8 @@ Will become the following after the render
 <div data-if="test.hello.world">test data</div>
 <div data-if="test2.hello.world"></div>
 ```
+
+---
 
 ### data-unknown
 
@@ -111,6 +121,8 @@ Will become the following after the render
 <div data-if="test2.hello.world" data-unknown="Data does not exist">Data does not exist</div>
 ```
 
+---
+
 ### data-src
 
 Available on any html tag that supports src attribute (ie images). The value of this attribute will be a path within `mfw.data`.
@@ -133,6 +145,8 @@ Will become the following after the render
 <img data-src="/images/test.jpg" />
 ```
 
+---
+
 ### data-show
 
 Available on any html tag that has got a conditional attribute (`data-if` `data-for` `data-src` `data-default` `data-switch` `data-case`). The value of this attribute will be treated as a string.
@@ -143,6 +157,8 @@ This tag allows an override of the display of an element when it has been displa
 <div data-if="loading">This will render as a block when 'mfw.data.loading' it truthy</div>
 <div data-if="loading" data-show="inline-block">This will render as an inline-block when 'mfw.data.loading' it truthy</div>
 ```
+
+---
 
 ### data-if
 
@@ -169,17 +185,15 @@ Further examples
 <div data-if="test.hello.world<=2">Will show if mfw.data.test.hello.world is less than or equal to 2</div>
 ```
 
+---
+
 ### data-class
 
 Available on any html tag. The value of this attribute will be a path within `mfw.data`.
 
 Upon each render, the entire contents of the elements class will be replaced with the data matched by the data path on the tag.
 
----
-**NOTE**
-All classes on the element will be removed prior the looked up class matching. If complex class combinations are required these need processing and adding to the mapped data.
-
----
+> **NOTE** All classes on the element will be removed prior the looked up class matching. If complex class combinations are required these need processing and adding to the mapped data.
 
 ```html
 <div data-if="test.hello.world"></div>
@@ -203,17 +217,15 @@ Will become the following after the render
 <div data-if="test2.hello.world"></div>
 ```
 
+---
+
 ### data-class-if
 
 Available on any html tag. The value of this attribute will be a path within `mfw.data` and the class name to be manipulated.
 
 This tag is split in 2 separated by a semicolon ';'. The first half is the matching condition following the format of `data-if`, the second is a string representing the conditional class name.
 
----
-**NOTE**
-Each element can only hav 1 `data-class-if` tag. If complex class combinations are required these need processing and adding to the mapped data.
-
----
+> **NOTE** Each element can only hav 1 `data-class-if` tag. If complex class combinations are required these need processing and adding to the mapped data.
 
 ```html
 <div class="Tab" data-class-if="activeTab=Tab1;active">Tab 1</div>
@@ -236,6 +248,8 @@ Will become the following after the render
 <div class="Tab" data-class-if="activeTab=Tab3;active">Tab 3</div>
 ```
 
+---
+
 ### data-switch, data-default & data-case
 
 Available on any html tag. The value of `data-switch` attribute will be a path within `mfw.data`. The value of `data-case` will be treated as a string.
@@ -246,11 +260,7 @@ Available on any html tag. The value of `data-switch` attribute will be a path w
 * `data-case` - string to match to.
 * `data-default` - has no value, this will be the matched element if the data switch path doesn't resolve or doesn't match any `data-case`.
 
----
-**NOTE**
-The renderer will only evaluate immediate  children nodes of the switch element looking for `data-case` or `data-default`. This is to allow nested switch usage.
-
----
+> **NOTE** The renderer will only evaluate immediate  children nodes of the switch element looking for `data-case` or `data-default`. This is to allow nested switch usage.
 
 ```html
 <div data-switch="test.hello.world">
@@ -278,6 +288,8 @@ Will become the following after the render
 ```
 
 ---
+
+
 ## To add to readme
 * data-for
 * data-each
