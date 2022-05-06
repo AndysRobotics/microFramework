@@ -24,12 +24,12 @@ The `mfw.data` object can contain any structure, including nested branches, arra
 
 ## Contents
 
-1) Files
-2) Including the library and initialising
-3) Data Tags
-4) Methods
-5) Reading inputs
-6) Onclick and other listeners
+1) [Files](#1---files)
+2) [Including the library and initialising](#2---including-the-library-and-initialising)
+3) [Data Tags](#3---data-tags)
+4) [Methods](#4---methods)
+5) [Reading inputs](#5---reading-inputs)
+6) [Onclick and other listeners](#6---onclick-and-other-listeners)
 
 ---
 
