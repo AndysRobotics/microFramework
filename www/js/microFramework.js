@@ -41,7 +41,7 @@ const mfw = {
     getDataFromInputGroup(groupName){
         if(!groupName || typeof(groupName)!='string') return {};
         let result = {};
-        for(let input of document.querySelectorAll('[data-group]')){
+        for(let input of document.querySelectorAll('[data-group="' + groupName + '"]')){
             let key = input.name;
             if(key){
                 if(input.type=="checkbox") result[key] = !!input.checked;
