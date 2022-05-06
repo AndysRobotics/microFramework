@@ -170,7 +170,7 @@ const mfw = {
 
             for(let el of document.querySelectorAll('[data-for]')){
                 let condition = el.getAttribute('data-for');
-                let templateElements = el.querySelectorAll(':scope [data-each]');
+                let templateElements = el.querySelectorAll(':scope > [data-each]');
                 if(el.getAttribute(loopProccessedTempAttr)) continue;
                 el.setAttribute(loopProccessedTempAttr, true);
 
@@ -210,16 +210,17 @@ const mfw = {
                 this.hideElement(swEl);
             }else{
                 let caseFound = false;
-                for(let c of swEl.querySelectorAll(':scope [data-case]')){
+                for(let c of swEl.querySelectorAll(':scope > [data-case]')){
                     let caseCondition = c.getAttribute('data-case');
                     if(caseCondition==value){
                         caseFound = true;
                         this.showElement(c);
+                        break;
                     }else{
                         this.hideElement(c);
                     }
                 }
-                let defCases = swEl.querySelectorAll(':scope [data-default]');
+                let defCases = swEl.querySelectorAll(':scope > [data-default]');
                 if(defCases.length){
                     if(caseFound){
                         this.hideElement(defCases[0]);
