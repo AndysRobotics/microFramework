@@ -1,5 +1,11 @@
 # Micro Javascript Web App Framework
 
+> **TLDR;** This is a lightweight engine for DOM manulation. Suporting 2 way-data binding, loops, switches and other features. 
+> A global object `mfw` will be created and all data bound to the UI lives in `mfw.data`. 
+> Every external change to `mfw.data` requires a call to `mfw.render()`. Inputs will automatically execute a render.
+> `mfw` has methods to aid in data gathering.
+> Examples can be found in www/
+
 This engine is 100% javascript with no dependencies and no server side processing/compiling required. This allows the engine to be served by any form of webserver.
 
 It is very lightweight (v1.0.000 is 11.3KB or 5.5KB minified) and will only render when required. There is no virtual DOM, all interaction with the DOM is via `data-` attribute tags.
