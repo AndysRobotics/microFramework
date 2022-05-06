@@ -59,7 +59,7 @@ Current tags
 * data-innerHtml - bind data from `mfw.data` object to the html
 * data-unknown - used if `data-innerHtml` is empty or not found
 * data-src - bind data from `mfw.data` object to element's src attribute
-* data-show - used to change the override the default display property `block` being used to show an element 
+* data-show - used to change the override the default display property `block` when an element is shown 
 * data-if - used to display an element based on a condition met from `mfw.data` object
 * data-class - used to bind from `mfw.data` object to an elements class
 * data-class-if - used to give an element an additional class name based on a condition met from `mfw.data` object
@@ -67,6 +67,8 @@ Current tags
 * data-case - element to show on a matched switch case
 * data-default - default element to display on unmatches switch cases
 
+> **NOTE** html elements with the following tags will have their `display` style property set on each render
+> `data-if` `data-for` `data-each` `data-none` `data-src` `data-switch` `data-default` `data-case`
 ---
 
 ### data-innerHtml
@@ -289,15 +291,166 @@ Will become the following after the render
 
 ---
 
+### data-for, data-each & data-each-index
+
+The `data-for` attribute is available on any html tag. The value of this attribute will be a path within `mfw.data`. If the data obtained from the path is not iterable, this tag will do nothing.
+
+`data-each` does not have a value. The element must be a direct child of the element with the `data-for` attribute. The element with this attribute will become the template for each array item found in the `mfw.data` path being evaluated.
+
+`data-each-index` is added to each generated element indicating the postition within the array.
+
+> **NOTE** To reference data within the array, the index needs to be excluded
+
+
+```html
+<div data-for="test.people">
+    <div data-each>
+        Name : <span data-innerHtml="test.people.name"></span><br>
+        Age : <span data-innerHtml="test.people.age"></span>
+    </div>
+</div>
+        
+<script>
+    mfw.data = {
+        test:{ 
+            people: [
+                { name: "Jeff", age: 35 },
+                { name: "Steve", age: 28 },
+                { name: "Sarah", age: 29 },
+            ]
+        }
+    }
+    mfw.render();
+</script>
+```
+
+Will become the following after the render
+
+```html
+<div data-for="test.people" style="display:block;">
+    <div data-each style="display:none;">
+        Name : <span data-innerHtml="test.people.name"></span><br>
+        Age : <span data-innerHtml="test.people.age"></span>
+    </div>
+    <div data-each-index="0" style="display:block;">
+        Name : <span data-innerHtml="test.people.0.name">Jeff</span><br>
+        Age : <span data-innerHtml="test.people.0.age">35</span>
+    </div>
+    <div data-each-index="1" style="display:block;">
+        Name : <span data-innerHtml="test.people.1.name">Steve</span><br>
+        Age : <span data-innerHtml="test.people.1.age">28</span>
+    </div>
+    <div data-each-index="2" style="display:block;">
+        Name : <span data-innerHtml="test.people.2.name">Sarah</span><br>
+        Age : <span data-innerHtml="test.people.2.age">29</span>
+    </div>
+</div>
+```
+
+---
+
+### data-value
+
+Available on any html tag that supports value or checked (inputs, textarea etc). The value of this attribute will be a path within `mfw.data`.
+
+The `data-value` tag is used for 2-way binding of data between an `mfw.data` element and a html input/textbox.
+
+If the input is of the type `checkbox` then the data will be converted to a boolean, otherwise it will become a string.
+
+`mfw.init()` will attach an input event listener on the `document` object which fires on any input change when an field is in or out of focus. The event handler will check if the target has `data-value` attribute and copy the input into the `mfw.data` object. If the value has changed, the handler will automatically trigger a fresh render.
+
+```html
+<input data-value="test.name"><br>
+<div data-innerHtml="test.name">This will be the contents of the input</div>
+```
+
+---
+
+### data-group
+
+The value of `data-group` will be treated as a string. This is used to group inputs together for easy data retrieval. This can be used with `data-value` or independently.
+
+This attribute cam work in 2 ways.
+
+1) Available on any html tag that supports value or checked (inputs, textarea etc). Used for data retrieval.
+2) Available on any html tag to lookup any inputs that have the same `data-group` attribute value via the `mfw.getDataFromElement(element)` method.
+
+
+> **NOTE** Input/textarea Elements with the `data-group` must be given a unique `name` tag to structure the lookup data, the `name` tag will be used to map the result
+
+```html
+<input name="firstName" data-group="newPerson">
+<input name="laststName" data-group="newPerson">
+<input name="age" data-group="newPerson">
+<button onclick="submitForm(this)" data-group="newPerson">Add</button>
+
+<script>
+    function submitForm(element){
+        let data = mfw.getDataFromElement(element);
+        console.log(data);
+    }
+</script>
+```
+
+When the button is clicked, the console will have
+
+```javascript
+    {
+        api: null,
+        groupData: {
+            firstName: "Contents of firstName",
+            lastName: "Contents of lastName",
+            age: "Contents of age"
+        },
+        index: null,
+        params: null
+    }
+```
+
+---
+
+### data-param & data-api
+
+Available on any html tag. `data-param` value will be a path within `mfw.data`. `data-api` value will be treated as a string.
+
+Both these tags are only used by the `mfw.getDataFromElement(element)` method to aid data lookups, especially useful in `data-for` loops for clickable elements.
+
+```html
+<input name="firstName" data-group="newPerson">
+<input name="laststName" data-group="newPerson">
+<input name="age" data-group="newPerson">
+<button onclick="submitForm(this)" data-group="newPerson" data-api="/API/addPerson" data-param="test.hello">Add</button>
+
+<script>
+    mfw.data = {
+        test:{ hello: { world: "test data" } }
+    }
+    
+    function submitForm(element){
+        let data = mfw.getDataFromElement(element);
+        console.log(data);
+    }
+</script>
+```
+
+When the button is clicked, the console will have
+
+```javascript
+    {
+        api: "/API/addPerson",
+        groupData: {
+            firstName: "Contents of firstName",
+            lastName: "Contents of lastName",
+            age: "Contents of age"
+        },
+        index: null,
+        params: { world: "test data" }
+    }
+```
+
+---
 
 ## To add to readme
-* data-for
-* data-each
-* data-each-index
-* data-value
-* data-group
-* data-param
-* data-api
 * mfw methods
 * reading inputs
 * onclick and other listeners
