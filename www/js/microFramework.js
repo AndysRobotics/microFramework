@@ -93,7 +93,7 @@ const mfw = {
 
     _handleDocumentInteraction: function(event){
         if(!event || !event.target || typeof(event.target.getAttribute)!='function') return;
-        if(event.target.tagName!='INPUT' && event.target.tagName!='TEXTAREA') return;
+        if(event.target.tagName!='INPUT' && event.target.tagName!='TEXTAREA' && event.target.tagName!='SELECT') return;
         if(!event.target.getAttribute('data-value')) return;
         let path = event.target.getAttribute('data-value');
         if(!path) return;
