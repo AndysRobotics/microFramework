@@ -16,7 +16,18 @@ The `mfw.data` object can contain any structure, including nested branches, arra
 
 ---
 
-## Files
+## Contents
+
+1) Files
+2) Including the library and initialising
+3) Data Tags
+4) Methods
+5) Reading inputs
+6) Onclick and other listeners
+
+---
+
+## 1 - Files
 * server.js - Not required for live system, this is a simple node web server to serve files located in www
 * www/index.html - Simple example of features
 * www/css/style.css - Style sheet for example - not required for framework to operate
@@ -25,7 +36,7 @@ The `mfw.data` object can contain any structure, including nested branches, arra
 
 ---
 
-## Including the library and initialising
+## 2 - Including the library and initialising
 
 Include the following in the `<head></head>`. **Do not put these in a style sheet** or the app will render the objects incorrectly whilst loading the stylesheet. Having these in the `<head></head>` will ensure correct operation.
 ```html
@@ -52,10 +63,10 @@ The data object can be set before the call to `mfw.init()` in the example below 
 
 ---
 
-## Data tags
+## 3 - Data tags
 
 All interaction between the engine and the DOM is driven by `data-` attribute tags.
-Current tags
+
 * data-innerHtml - bind data from `mfw.data` object to the html
 * data-unknown - used if `data-innerHtml` is empty or not found
 * data-src - bind data from `mfw.data` object to element's src attribute
@@ -403,7 +414,7 @@ When the button is clicked, the console will have
             age: "Contents of age"
         },
         index: null,
-        params: null
+        param: null
     }
 ```
 
@@ -436,21 +447,61 @@ Both these tags are only used by the `mfw.getDataFromElement(element)` method to
 When the button is clicked, the console will have
 
 ```javascript
-    {
-        api: "/API/addPerson",
-        groupData: {
-            firstName: "Contents of firstName",
-            lastName: "Contents of lastName",
-            age: "Contents of age"
-        },
-        index: null,
-        params: { world: "test data" }
-    }
+{
+    api: "/API/addPerson",
+    groupData: {
+        firstName: "Contents of firstName",
+        lastName: "Contents of lastName",
+        age: "Contents of age"
+    },
+    index: null,
+    param: { world: "test data" }
+}
 ```
 
 ---
 
-## To add to readme
-* mfw methods
-* reading inputs
-* onclick and other listeners
+## 4 - Methods
+
+The `mfw` object has several methods specifically designed to be run by consuming code if needed.
+
+* `getDataByPath(<string>path)` - return any data found in `mfw.data` that matches the `path` provided
+* `setDataByPath(<string>path, <any>data)` - stored `data` in the `mfw.data` object, following the `path` provided, creating nodes if required
+* `getDataFromInputGroup(<string>groupName)` - return an object of data from inputs with the matching `data-group` attribute value (see `data-group` above)
+* `getDataFromElement(<html element/node>element)` - returns data related to the element provided (see `getDataFromElement` below)
+* `showElement(<html element/node>element)` - sets an elements `display` to `block` or to the value of `data-show` if present (see `data-show` above) 
+* `hideElement(<html element/node>element)` - sets an elements `display` to `none`
+* `init()` - initialise the framework engine and render for the first time (see "2 - Including the library and initialising" above)
+* `render()` - evaluates and renders all elements in the DOM
+
+> **NOTE** Methods on the `mfw` object that have names starting with an underscore - eg `mfw._renderForLoops()` are designed to be run by the engine directly and may produce unexpected results if executed
+
+> **NOTE** `mfw.render()` must be called following any changes to the `mfw.data` object. The **ONLY** exception to this is inputs and textareas
+
+---
+
+### getDataFromElement(<html element/node>element)
+
+This method is useful when sending element events (`onclick` etc) to a generic handler. Used to collate information related to the element that triggered the event.
+
+When used within a `data-for` loop, this can be used to detect the index of the array and `data-param` can be used to reference parent or the loop item information. 
+
+Returns
+```javascript
+{
+    api: "value of data-api", // see above
+    groupData: {}, // see data-group
+    index: "value of data-each-index", // see data-for
+    param: {} // see data-param
+}
+```
+
+---
+
+## 5 - Reading Inputs
+
+---
+
+## 6 - Onclick and other listeners
+
+---
