@@ -1,6 +1,6 @@
 # Micro Javascript Web App Framework
 
-> **TLDR;** This is a lightweight engine for DOM manulation. Suporting 2 way-data binding, loops, switches and other features. 
+> **TLDR;** This is a lightweight engine for DOM manulation. Suporting 2 way-data binding, loops, switches and other features.
 > A global object `mfw` will be created and all data bound to the UI lives in `mfw.data`. 
 > Every external change to `mfw.data` requires a call to `mfw.render()`. Inputs will automatically execute a render.
 > `mfw` has methods to aid in data gathering.
@@ -505,6 +505,10 @@ Returns
 ---
 
 ## 5 - Reading Inputs
+
+Inputs can be read via 2 methods
+1) Using `data-value` attributes to bind an input value to an path within the `mfw.data` object (see `data-value` above)
+2) Using `data-group` and `name` attributes and calling `getDataFromElement` or `getDataFromInputGroup` to build a object with the values (see above)
 
 ---
 
