@@ -90,6 +90,13 @@ All interaction between the engine and the DOM is driven by `data-` attribute ta
 * data-switch - used to allow a DOM switch statement
 * data-case - element to show on a matched switch case
 * data-default - default element to display on unmatches switch cases
+* data-for - used to allow a for loop within the DOM statement
+* data-each - template used by `data-for` object
+* data-each-index - set by renderer to referance position within `data-for` loop
+* data-value - bind data from `mfw.data` object to element's (2-way input binding)
+* data-group - used by `mfw.getDataFromElement` and `mfw.getDataFromInputGroup` for event handlers
+* data-param - used by `mfw.getDataFromElement` for event handlers
+* data-api - used by `mfw.getDataFromElement` for event handlers
 
 ---
 
