@@ -514,4 +514,4 @@ Inputs can be read via 2 methods
 
 ## 6 - Onclick and other listeners
 
----
+The engine adds no event listemers to any html elements/nodes. The best approach to hendlers is to define then directly on the html elements passing the keyword `this` and using `mfw.getDataFromElement` method to construct data. See `data-group`, `data-param` & `data-api`.
