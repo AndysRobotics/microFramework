@@ -366,10 +366,91 @@ If the input is of the type `checkbox` then the data will be converted to a bool
 
 ---
 
+### data-group
+
+The value of `data-group` will be treated as a string. This is used to group inputs together for easy data retrieval. This can be used with `data-value` or independently.
+
+This attribute cam work in 2 ways.
+
+1) Available on any html tag that supports value or checked (inputs, textarea etc). Used for data retrieval.
+2) Available on any html tag to lookup any inputs that have the same `data-group` attribute value via the `mfw.getDataFromElement(element)` method.
+
+
+> **NOTE** Input/textarea Elements with the `data-group` must be given a unique `name` tag to structure the lookup data, the `name` tag will be used to map the result
+
+```html
+<input name="firstName" data-group="newPerson">
+<input name="laststName" data-group="newPerson">
+<input name="age" data-group="newPerson">
+<button onclick="submitForm(this)" data-group="newPerson">Add</button>
+
+<script>
+    function submitForm(element){
+        let data = mfw.getDataFromElement(element);
+        console.log(data);
+    }
+</script>
+```
+
+When the button is clicked, the console will have
+
+```javascript
+    {
+        api: null,
+        groupData: {
+            firstName: "Contents of firstName",
+            lastName: "Contents of lastName",
+            age: "Contents of age"
+        },
+        index: null,
+        params: null
+    }
+```
+
+---
+
+### data-param & data-api
+
+Available on any html tag. `data-param` value will be a path within `mfw.data`. `data-api` value will be treated as a string.
+
+Both these tags are only used by the `mfw.getDataFromElement(element)` method to aid data lookups, especially useful in `data-for` loops for clickable elements.
+
+```html
+<input name="firstName" data-group="newPerson">
+<input name="laststName" data-group="newPerson">
+<input name="age" data-group="newPerson">
+<button onclick="submitForm(this)" data-group="newPerson" data-api="/API/addPerson" data-param="test.hello">Add</button>
+
+<script>
+    mfw.data = {
+        test:{ hello: { world: "test data" } }
+    }
+    
+    function submitForm(element){
+        let data = mfw.getDataFromElement(element);
+        console.log(data);
+    }
+</script>
+```
+
+When the button is clicked, the console will have
+
+```javascript
+    {
+        api: "/API/addPerson",
+        groupData: {
+            firstName: "Contents of firstName",
+            lastName: "Contents of lastName",
+            age: "Contents of age"
+        },
+        index: null,
+        params: { world: "test data" }
+    }
+```
+
+---
+
 ## To add to readme
-* data-group
-* data-param
-* data-api
 * mfw methods
 * reading inputs
 * onclick and other listeners
