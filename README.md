@@ -270,10 +270,10 @@ The renderer will only evaluate immediate  children nodes of the switch element 
 Will become the following after the render
 
 ```html
-<div data-switch="test.hello.world">
-    <div data-default>World not found</div>
+<div data-switch="test.hello.world" style="display:block">
+    <div data-default style="display: none;">World not found</div>
     <div data-case="blue" style="display:block">The world is blue</div>
-    <div data-case="red">The world is red</div>
+    <div data-case="red" style="display: none;">The world is red</div>
 </div>
 ```
 
