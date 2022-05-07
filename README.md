@@ -133,7 +133,7 @@ All interaction between the engine and the DOM is driven by `data-` attribute ta
 > **NOTE** html elements with the following tags will have their `display` style property set on each render<br>
 > `data-if` `data-for` `data-each` `data-none` `data-src` `data-switch` `data-default` `data-case`
 
-| attribute | value | desciption |
+| Attribute | Value | Desciption |
 | --- | --- | --- |
 | [data-innerHtml](#data-innerhtml) | path within `mfw.data` | bind data from `mfw.data` object to the html
 | [data-unknown](#data-unknown) | string | used if `data-innerHtml` is empty or not found
