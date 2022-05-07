@@ -1,3 +1,5 @@
+![Icon](./www/logo.svg)
+
 # Micro Javascript Web App Framework
 
 > **TLDR;** This is a lightweight engine for DOM manulation. Suporting 2 way-data binding, loops, switches and other features.<br>
