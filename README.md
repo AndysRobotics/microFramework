@@ -8,8 +8,6 @@
 > `mfw` has methods to aid in data gathering.<br>
 > Examples can be found in www/
 
----
-
 ## About
 
 This engine is 100% javascript with no dependencies and no server side processing/compiling required. This allows the engine to be served by any form of webserver.
@@ -26,16 +24,14 @@ All html binding and rendering is based on a `data` object within `mfw`. Any cus
 
 The `mfw.data` object can contain any structure, including nested branches, arrays of objects. If a mapping does not exist in the structure the system will not error. Any components of the `mfw.data` that are bound to input or text areas will create all branches when data is added to the input. All mapping/binding is done by using string representations of the path.
 
----
-
 ## Contents
 
 1) [Files](#1---files)
 2) [Including the library and initialising](#2---including-the-library-and-initialising)
-3) [Data Tags](#3---data-tags)
+3) [Methods](#3---methods)
 4) [Reading inputs](#4---reading-inputs)
 5) [Onclick and other listeners](#5---onclick-and-other-listeners)
-6) [Methods](#6---methods)
+6) [Methods](#6---data-tags)
 
 ---
 
