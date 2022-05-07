@@ -12,9 +12,9 @@
         </style>
     </head>
     <body>
-        <div style='display: inline-block;' class="Tab" data-class-if="activeTab=Tab1;active" onclick="changeTab('Tab1')">Tab 1</div>
-        <div style='display: inline-block;' class="Tab" data-class-if="activeTab=Tab2;active" onclick="changeTab('Tab2')">Tab 2</div>
-        <div style='display: inline-block;' class="Tab" data-class-if="activeTab=Tab3;active" onclick="changeTab('Tab3')">Tab 3</div>
+        <div class="tab" data-class-if="activeTab=Tab1;active" onclick="changeTab('Tab1')">Tab 1</div>
+        <div class="tab" data-class-if="activeTab=Tab2;active" onclick="changeTab('Tab2')">Tab 2</div>
+        <div class="tab" data-class-if="activeTab=Tab3;active" onclick="changeTab('Tab3')">Tab 3</div>
         <div data-if="activeTab=Tab1">
             Data inside tab 1
         </div>
@@ -88,6 +88,7 @@
             }
 
             function changeTab(newTab){
+                if(mfw.data.activeTab==newTab) return;
                 mfw.data.activeTab=newTab;
                 mfw.render();
             }
