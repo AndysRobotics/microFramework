@@ -133,23 +133,26 @@ All interaction between the engine and the DOM is driven by `data-` attribute ta
 > **NOTE** html elements with the following tags will have their `display` style property set on each render<br>
 > `data-if` `data-for` `data-each` `data-none` `data-src` `data-switch` `data-default` `data-case`
 
-* data-innerHtml - bind data from `mfw.data` object to the html
-* data-unknown - used if `data-innerHtml` is empty or not found
-* data-src - bind data from `mfw.data` object to element's src attribute
-* data-show - used to change the override the default display property `block` when an element is shown 
-* data-if - used to display an element based on a condition met from `mfw.data` object
-* data-class - used to bind from `mfw.data` object to an elements class
-* data-class-if - used to give an element an additional class name based on a condition met from `mfw.data` object
-* data-switch - used to allow a DOM switch statement
-* data-case - element to show on a matched switch case
-* data-default - default element to display on unmatches switch cases
-* data-for - used to allow a for loop within the DOM statement
-* data-each - template used by `data-for` object
-* data-each-index - set by renderer to referance position within `data-for` loop
-* data-value - bind data from `mfw.data` object to element's (2-way input binding)
-* data-group - used by `mfw.getDataFromElement` and `mfw.getDataFromInputGroup` for event handlers
-* data-param - used by `mfw.getDataFromElement` for event handlers
-* data-api - used by `mfw.getDataFromElement` for event handlers
+| attribute | value | desciption |
+| --- | --- | --- |
+| [data-innerHtml](#data-innerhtml) | path within `mfw.data` | bind data from `mfw.data` object to the html
+| [data-unknown](#data-unknown) | string | used if `data-innerHtml` is empty or not found
+| [data-src](#data-src) | path within `mfw.data` | bind data from `mfw.data` object to element's src attribute
+| [data-show](#data-show) | string | used to change the override the default display property `block` when an element is shown 
+| [data-if](#data-if) | path within `mfw.data` & string condition | used to display an element based on a condition met from `mfw.data` object
+| [data-class](#data-class) | path within `mfw.data` | used to bind from `mfw.data` object to an elements class
+| [data-class-if](#data-class-if) | path within `mfw.data` & string condition/class | used to give an element an additional class name based on a condition met from `mfw.data` object
+| [data-switch](#data-switch-data-default--data-case) | path within `mfw.data` | used to allow a DOM switch statement
+| [data-case](#data-switch-data-default--data-case) | string | element to show on a matched switch case
+| [data-default](#data-switch-data-default--data-case) | N/A | default element to display on unmatches switch cases
+| [data-for](#data-for-data-each--data-each-index) | path within `mfw.data` | used to allow a for loop within the DOM statement
+| [data-each](#data-for-data-each--data-each-index) | N/A | template used by `data-for` object
+| [data-each-index](#data-for-data-each--data-each-index) | N/A | set by renderer to referance position within `data-for` loop
+| [data-value](#data-value) | path within `mfw.data` | bind data from `mfw.data` object to element's value (2-way input binding)
+| [data-group](#data-group) | string | used by `mfw.getDataFromElement` and `mfw.getDataFromInputGroup` for event handlers
+| [data-param](#data-param--data-api) | string | used by `mfw.getDataFromElement` for event handlers
+| [data-api](#data-param--data-api) | string | used by `mfw.getDataFromElement` for event handlers
+
 
 ---
 
