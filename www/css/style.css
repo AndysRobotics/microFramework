@@ -1,6 +1,13 @@
-body{
+body, html{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: #333;
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+}
+
+.page-contents{
+    padding: 4px 8px;
 }
 
 .tab{
@@ -17,4 +24,31 @@ body{
 
 .tab.active, .tab:hover{
     border-bottom-color: #ff8000;
+}
+
+.tab-contents{
+    margin: 8px 0px;
+}
+
+label{
+    font-size: smaller;
+    color: #ff8000;
+}
+
+pre{
+    border: 1px solid #ccc;
+    background: #ff800010;
+    padding: 4px;
+    margin: 0px;
+}
+
+.loading{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    cursor: wait;
+    background: #00000080;
 }

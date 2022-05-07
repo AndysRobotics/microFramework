@@ -12,75 +12,89 @@
         </style>
     </head>
     <body>
-        <div class="tab" data-class-if="activeTab=Tab1;active" onclick="changeTab('Tab1')">Tab 1</div>
-        <div class="tab" data-class-if="activeTab=Tab2;active" onclick="changeTab('Tab2')">Tab 2</div>
-        <div class="tab" data-class-if="activeTab=Tab3;active" onclick="changeTab('Tab3')">Tab 3</div>
-        <div data-if="activeTab=Tab1">
-            Data inside tab 1
-        </div>
-        <div data-if="activeTab=Tab2">
-            Data inside tab 2
-        </div>
-        <div data-if="activeTab=Tab3">
-            Data inside tab 3
-        </div>
-
-        <div data-show="inline-block" data-innerHtml="test.name" data-unknown="Unknown"></div>
-        <div data-for="devices">
-            <div data-each>
-                <div data-if="devices.name" data-innerHtml="devices.name"></div>
-                <div data-switch="devices.type">
-                    <div data-default>
-                        This device is unknown
-                    </div>
-                    <div data-case="Cam">
-                        This device is a camera
-                    </div>
-                </div>
-                <div data-if="!devices.items.length">No Device Items</div>
-                <div data-for="devices.items">
-                    <div data-each onclick="deviceItemClick(this)" data-param="devices">
-                        <div data-innerHtml="devices.items.name"></div>
-                        <img data-class="devices.items.className" data-src="devices.items.image">
+        <div class="page-contents">
+            <div class="tab" data-class-if="activeTab=Test;active" onclick="changeTab('Test')">Test</div>
+            <div class="tab" data-class-if="activeTab=Tab2;active" onclick="changeTab('Tab2')">Tab 2</div>
+            <div class="tab" data-class-if="activeTab=Data;active" onclick="changeTab('Data')">mfw.data</div>
+    
+            <div class="tab-contents" data-if="activeTab=Test">
+                <div data-show="inline-block" data-innerHtml="test.name" data-unknown="Unknown"></div>
+                <div data-for="devices">
+                    <div data-each>
+                        <div data-if="devices.name" data-innerHtml="devices.name"></div>
+                        <div data-switch="devices.type">
+                            <div data-default>
+                                This device is unknown
+                            </div>
+                            <div data-case="Cam">
+                                This device is a camera
+                            </div>
+                        </div>
+                        <div data-if="!devices.items.length">No Device Items</div>
+                        <div data-for="devices.items">
+                            <div data-each onclick="deviceItemClick(this)" data-param="devices">
+                                <div data-innerHtml="devices.items.name"></div>
+                                <img data-class="devices.items.className" data-src="devices.items.image">
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <input type="checkbox" data-value="form.boolTest" name='boolTest' data-group="testGroup"><br>
+                <div data-innerHtml="form.boolTest"></div>
+                <input type="text" data-value="form.name" name='personName' data-group="testGroup"><br>
+                <div data-innerHtml="form.name"></div>
+                <textarea data-value="form.info" name='personInfo' data-group="testGroup"></textarea><br>
+                <label for="cars">Choose a car:</label>
+                <select data-value="form.car" name="cars" id="cars" data-group="testGroup">
+                    <optgroup label="Swedish Cars">
+                        <option value="volvo">Volvo</option>
+                        <option value="saab">Saab</option>
+                    </optgroup>
+                    <optgroup label="German Cars">
+                        <option value="mercedes">Mercedes</option>
+                        <option value="audi">Audi</option>
+                    </optgroup>
+                </select>
+            </div>
+    
+            <div class="tab-contents" data-if="activeTab=Tab2">
+                Data inside tab 2
+            </div>
+    
+            <div class="tab-contents" data-if="activeTab=Data">
+                <label>Contents of mfw.data</label>
+                <pre data-innerHtml="."></pre>
             </div>
         </div>
-        <div data-if="loading">
-            Loading, please wait...
-        </div>
-        <input type="checkbox" data-value="form.boolTest" name='boolTest' data-group="testGroup"><br>
-        <div data-innerHtml="form.boolTest"></div>
-        <input type="text" data-value="form.name" name='personName' data-group="testGroup"><br>
-        <div data-innerHtml="form.name"></div>
-        <textarea data-value="form.info" name='personInfo' data-group="testGroup"></textarea><br>
-        <label for="cars">Choose a car:</label>
-        <select data-value="form.car" name="cars" id="cars" data-group="testGroup">
-            <optgroup label="Swedish Cars">
-                <option value="volvo">Volvo</option>
-                <option value="saab">Saab</option>
-            </optgroup>
-            <optgroup label="German Cars">
-                <option value="mercedes">Mercedes</option>
-                <option value="audi">Audi</option>
-            </optgroup>
-        </select>
+
+        <div data-if="loading" class="loading"></div>
 
         <script src="/js/microFramework.js"></script>
         <script>
             mfw.data = {
-                activeTab: 'Tab1',
+                activeTab: 'Test',
                 form: {
                     name: 'TestInput',
                     car: 'volvo',
                 },
-                loading: true, test: { show: true }, devices: [
+                test: { show: true }, devices: [
                     { name: 'Hello', type: 'Cam', items: [{ name: "world1", className: 'testClass' }, { name: "world2" }] },
                     { name: 'NoItems', type: 'Cam2', items: [] },
                 ],
             };
 
             mfw.init();
+
+            function simulateAPICall(el){
+                let data = mfw.getDataFromElement(el);
+                console.log('simulateAPICall', el, data);
+                mfw.data.loading = true;
+                mfw.render();
+                setTimeout(()=>{
+                    mfw.data.loading = false;
+                    mfw.render();
+                }, 2000);
+            }
 
             function deviceItemClick(el){
                 let data = mfw.getDataFromElement(el);
