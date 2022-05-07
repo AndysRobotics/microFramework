@@ -31,9 +31,9 @@ The `mfw.data` object can contain any structure, including nested branches, arra
 1) [Files](#1---files)
 2) [Including the library and initialising](#2---including-the-library-and-initialising)
 3) [Data Tags](#3---data-tags)
-4) [Methods](#4---methods)
-5) [Reading inputs](#5---reading-inputs)
-6) [Onclick and other listeners](#6---onclick-and-other-listeners)
+4) [Reading inputs](#4---reading-inputs)
+5) [Onclick and other listeners](#5---onclick-and-other-listeners)
+6) [Methods](#6---methods)
 
 ---
 
@@ -58,7 +58,9 @@ Include the following in the `<head></head>`. **Do not put these in a style shee
 
 Include the javascript file, this is recommended to be at the bottom of the `<body>` tag, this allows the full html page to load before downloading the engine.
 After the include, the engine needs to be initialised using `mfw.init()`. This will set up the document listener for input changes and run the first render.
+
 The data object can be set before the call to `mfw.init()` in the example below this can set a loading flag and activeTab (fields used in the examples)
+
 ```html
 <script src="/js/microFramework.js"></script>
 <script>
@@ -73,7 +75,58 @@ The data object can be set before the call to `mfw.init()` in the example below 
 
 ---
 
-## 3 - Data tags
+## 3 - Methods
+
+The `mfw` object has several methods specifically designed to be run by consuming code if needed.
+
+* `getDataByPath(<string>path)` - return any data found in `mfw.data` that matches the `path` provided
+* `setDataByPath(<string>path, <any>data)` - stored `data` in the `mfw.data` object, following the `path` provided, creating nodes if required
+* `getDataFromInputGroup(<string>groupName)` - return an object of data from inputs with the matching `data-group` attribute value (see `data-group` below)
+* `getDataFromElement(<html element/node>element)` - returns data related to the element provided (see `getDataFromElement` below)
+* `showElement(<html element/node>element)` - sets an elements `display` to `block` or to the value of `data-show` if present (see `data-show` below) 
+* `hideElement(<html element/node>element)` - sets an elements `display` to `none`
+* `init()` - initialise the framework engine and render for the first time (see "2 - Including the library and initialising" above)
+* `render()` - evaluates and renders all elements in the DOM
+
+> **NOTE** Methods on the `mfw` object that have names starting with an underscore - eg `mfw._renderForLoops()` are designed to be run by the engine directly and may produce unexpected results if executed
+
+> **NOTE** `mfw.render()` must be called following any changes to the `mfw.data` object. The **ONLY** exception to this is inputs and textareas
+
+---
+
+### getDataFromElement(<html element/node>element)
+
+This method is useful when sending element events (`onclick` etc) to a generic handler. Used to collate information related to the element that triggered the event.
+
+When used within a `data-for` loop, this can be used to detect the index of the array and `data-param` can be used to reference parent or the loop item information. 
+
+Returns
+```javascript
+{
+    api: "value of data-api", // see below
+    groupData: {}, // see data-group
+    index: "value of data-each-index", // see data-for below
+    param: {} // see data-param below
+}
+```
+
+---
+
+## 4 - Reading Inputs
+
+Inputs can be read via 2 methods
+1) Using `data-value` attributes to bind an input value to an path within the `mfw.data` object (see `data-value` below)
+2) Using `data-group` and `name` attributes and calling `getDataFromElement` or `getDataFromInputGroup` to build a object with the values (see above)
+
+---
+
+## 5 - Onclick and other listeners
+
+The engine adds no event listeners to any html elements/nodes. The best approach to handlers is to define then directly on the html elements passing the keyword `this` and using `mfw.getDataFromElement` method to construct data. See `data-group`, `data-param` & `data-api`.
+
+---
+
+## 6 - Data tags
 
 All interaction between the engine and the DOM is driven by `data-` attribute tags.
 
@@ -476,54 +529,3 @@ When the button is clicked, the console will have
     param: { world: "test data" }
 }
 ```
-
----
-
-## 4 - Methods
-
-The `mfw` object has several methods specifically designed to be run by consuming code if needed.
-
-* `getDataByPath(<string>path)` - return any data found in `mfw.data` that matches the `path` provided
-* `setDataByPath(<string>path, <any>data)` - stored `data` in the `mfw.data` object, following the `path` provided, creating nodes if required
-* `getDataFromInputGroup(<string>groupName)` - return an object of data from inputs with the matching `data-group` attribute value (see `data-group` above)
-* `getDataFromElement(<html element/node>element)` - returns data related to the element provided (see `getDataFromElement` below)
-* `showElement(<html element/node>element)` - sets an elements `display` to `block` or to the value of `data-show` if present (see `data-show` above) 
-* `hideElement(<html element/node>element)` - sets an elements `display` to `none`
-* `init()` - initialise the framework engine and render for the first time (see "2 - Including the library and initialising" above)
-* `render()` - evaluates and renders all elements in the DOM
-
-> **NOTE** Methods on the `mfw` object that have names starting with an underscore - eg `mfw._renderForLoops()` are designed to be run by the engine directly and may produce unexpected results if executed
-
-> **NOTE** `mfw.render()` must be called following any changes to the `mfw.data` object. The **ONLY** exception to this is inputs and textareas
-
----
-
-### getDataFromElement(<html element/node>element)
-
-This method is useful when sending element events (`onclick` etc) to a generic handler. Used to collate information related to the element that triggered the event.
-
-When used within a `data-for` loop, this can be used to detect the index of the array and `data-param` can be used to reference parent or the loop item information. 
-
-Returns
-```javascript
-{
-    api: "value of data-api", // see above
-    groupData: {}, // see data-group
-    index: "value of data-each-index", // see data-for
-    param: {} // see data-param
-}
-```
-
----
-
-## 5 - Reading Inputs
-
-Inputs can be read via 2 methods
-1) Using `data-value` attributes to bind an input value to an path within the `mfw.data` object (see `data-value` above)
-2) Using `data-group` and `name` attributes and calling `getDataFromElement` or `getDataFromInputGroup` to build a object with the values (see above)
-
----
-
-## 6 - Onclick and other listeners
-
-The engine adds no event listemers to any html elements/nodes. The best approach to hendlers is to define then directly on the html elements passing the keyword `this` and using `mfw.getDataFromElement` method to construct data. See `data-group`, `data-param` & `data-api`.
