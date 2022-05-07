@@ -11,6 +11,7 @@ const mfw = {
 
     getDataByPath: function(path=''){
         let data = this.data;
+        if(path=='.') return data;
         if(!path || !data) return undefined;
         let paths = path.split('.');
         for(let path of paths){
@@ -254,7 +255,8 @@ const mfw = {
             let condition = el.getAttribute('data-innerHtml');
             let data = this.getDataByPath(condition);
             if(data || data===0 || data===false){
-                el.innerHTML = data;
+                if(typeof(data)=="object") el.innerHTML = JSON.stringify(data, null, 2);
+                else el.innerHTML = data;
             }else{
                 el.innerHTML = el.getAttribute('data-unknown') || '';
             }

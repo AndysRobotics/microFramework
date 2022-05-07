@@ -12,7 +12,7 @@
 
 This engine is 100% javascript with no dependencies and no server side processing/compiling required. This allows the engine to be served by any form of webserver.
 
-It is very lightweight (v1.0.000 is 11.3KB or 5.6KB minified) and will only render when required. There is no virtual DOM, all interaction with the DOM is via `data-` attribute tags.
+It is very lightweight (v1.0.000 is 11.4KB or 5.6KB minified) and will only render when required. There is no virtual DOM, all interaction with the DOM is via `data-` attribute tags.
 Only 1 event listener is registered to the DOM keeping CPU/Memory requirements low.
 
 > **NOTE** This engine is not recommended for very large projects. It doesn't have components, and apart from for loops (explained bellow) all html objects will exist at all times.
@@ -159,6 +159,8 @@ All interaction between the engine and the DOM is driven by `data-` attribute ta
 Available on any html tag that supports innerHtml (ie not inputs, images etc). The value of this attribute will be a path within `mfw.data`.
 
 Upon each render, the entire contents of the elements innerHtml will be replaced with the data matched by the data path on the tag.
+
+If the looked up data is an object, the renderer will run the data through `JSON.stringify` to prevent `[Object Object]` from being printed. TIP - you can use a value of '.' to bind the entire `mfw.data` object eg `<pre data-innerHtml="."></pre>` for debugging. 
 
 ```html
 <div data-if="test.hello.world"></div>
