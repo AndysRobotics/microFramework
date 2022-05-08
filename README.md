@@ -2,7 +2,7 @@
 
 # Micro Javascript Web App Framework
 
-> **TLDR;** This is a lightweight engine for DOM manulation. Suporting 2 way-data binding, loops, switches and other features.<br>
+> **TLDR;** This is a lightweight engine for DOM manipulation. Supporting 2 way-data binding, loops, switches and other features.<br>
 > A global object `mfw` will be created and all data bound to the UI lives in `mfw.data`.<br>
 > Every external change to `mfw.data` requires a call to `mfw.render()`. Inputs will automatically execute a render.<br>
 > `mfw` has methods to aid in data gathering.<br>
@@ -142,7 +142,7 @@ All interaction between the engine and the DOM is driven by `data-` attribute ta
 | [data-class-if](#data-class-if) | path within `mfw.data` & string condition/class | used to give an element an additional class name based on a condition met from `mfw.data` object
 | [data-switch](#data-switch-data-default--data-case) | path within `mfw.data` | used to allow a DOM switch statement
 | [data-case](#data-switch-data-default--data-case) | string | element to show on a matched switch case
-| [data-default](#data-switch-data-default--data-case) | N/A | default element to display on unmatches switch cases
+| [data-default](#data-switch-data-default--data-case) | N/A | default element to display on unmatched switch cases
 | [data-for](#data-for-data-each--data-each-index) | path within `mfw.data` | used to allow a for loop within the DOM statement
 | [data-each](#data-for-data-each--data-each-index) | N/A | template used by `data-for` object
 | [data-each-index](#data-for-data-each--data-each-index) | N/A | set by renderer to referance position within `data-for` loop
@@ -382,7 +382,7 @@ The `data-for` attribute is available on any html tag. The value of this attribu
 
 `data-each` does not have a value. The element must be a direct child of the element with the `data-for` attribute. The element with this attribute will become the template for each array item found in the `mfw.data` path being evaluated.
 
-`data-each-index` is added to each generated element indicating the postition within the array.
+`data-each-index` is added to each generated element indicating the position within the array.
 
 > **NOTE** To reference data within the array, the index needs to be excluded
 
