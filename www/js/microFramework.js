@@ -1,5 +1,5 @@
 const mfw = {
-    engine: '1.0.000',
+    engine: '1.0.002',
     data: {},
     lastRender: 0,
     maxLoopItterations: 20,
@@ -207,34 +207,30 @@ const mfw = {
         for(let swEl of document.querySelectorAll('[data-switch]')){
             let condition = swEl.getAttribute('data-switch');
             let value = this.getDataByPath(condition);
-            if(typeof(value)!='string'){
-                this.hideElement(swEl);
-            }else{
-                let caseFound = false;
-                for(let c of swEl.querySelectorAll(':scope > [data-case]')){
-                    let caseCondition = c.getAttribute('data-case');
-                    if(caseCondition==value){
-                        caseFound = true;
-                        this.showElement(c);
-                        break;
-                    }else{
-                        this.hideElement(c);
-                    }
-                }
-                let defCases = swEl.querySelectorAll(':scope > [data-default]');
-                if(defCases.length){
-                    if(caseFound){
-                        this.hideElement(defCases[0]);
-                    }else{
-                        caseFound = true;
-                        this.showElement(defCases[0]);
-                    }
-                }
-                if(caseFound){
-                    this.showElement(swEl);
+            let caseFound = false;
+            for(let c of swEl.querySelectorAll(':scope > [data-case]')){
+                let caseCondition = c.getAttribute('data-case');
+                if(caseCondition==value){
+                    caseFound = true;
+                    this.showElement(c);
+                    break;
                 }else{
-                    this.hideElement(swEl);
+                    this.hideElement(c);
                 }
+            }
+            let defCases = swEl.querySelectorAll(':scope > [data-default]');
+            if(defCases.length){
+                if(caseFound){
+                    this.hideElement(defCases[0]);
+                }else{
+                    caseFound = true;
+                    this.showElement(defCases[0]);
+                }
+            }
+            if(caseFound){
+                this.showElement(swEl);
+            }else{
+                this.hideElement(swEl);
             }
         }
     },
