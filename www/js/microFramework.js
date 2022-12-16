@@ -1,5 +1,5 @@
 const mfw = {
-    engine: '1.0.002',
+    engine: '1.0.003',
     data: {},
     lastRender: 0,
     maxLoopItterations: 20,
@@ -53,12 +53,19 @@ const mfw = {
     },
 
     getDataFromElement(el){
-        if(!el || typeof(el.getAttribute)!='function') return { index: null, api: null, param: null, groupData: {} };
+        if(!el || typeof(el.getAttribute)!='function') return { index: null, api: null, timeout: null, param: null, groupData: {} };
         let path = el.getAttribute('data-param');
         let groupName = el.getAttribute('data-group');
+        let timeout = el.getAttribute('data-timeout');
+        if(timeout && Number(timeout)==timeout){
+            timeout = Number(timeout);
+        }else{
+            timeout = null;
+        }
         return {
             index: el.getAttribute('data-each-index'),
             api: el.getAttribute('data-api'),
+            timeout,
             param: this.getDataByPath(path),
             groupData: this.getDataFromInputGroup(groupName),
         }

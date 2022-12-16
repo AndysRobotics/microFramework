@@ -12,7 +12,7 @@
 
 This engine is 100% javascript with no dependencies and no server side processing/compiling required. This allows the engine to be served by any form of webserver.
 
-It is very lightweight (v1.0.002 is 11.2KB or 5.6KB minified) and will only render when required. There is no virtual DOM, all interaction with the DOM is via `data-` attribute tags.
+It is very lightweight (v1.0.002 is 11.4KB or 5.6KB minified) and will only render when required. There is no virtual DOM, all interaction with the DOM is via `data-` attribute tags.
 Only 1 event listener is registered to the DOM keeping CPU/Memory requirements low.
 
 > **NOTE** This engine is not recommended for very large projects. It doesn't have components, and apart from for loops (explained bellow) all html objects will exist at all times.
@@ -103,6 +103,7 @@ Returns
 {
     api: "value of data-api", // see below
     groupData: {}, // see data-group
+    timeout: "value of data-timeout", // see below
     index: "value of data-each-index", // see data-for below
     param: {} // see data-param below
 }
@@ -120,7 +121,7 @@ Inputs can be read via 2 methods
 
 ## 5 - Onclick and other listeners
 
-The engine adds no event listeners to any html elements/nodes. The best approach to handlers is to define then directly on the html elements passing the keyword `this` and using `mfw.getDataFromElement` method to construct data. See `data-group`, `data-param` & `data-api`.
+The engine adds no event listeners to any html elements/nodes. The best approach to handlers is to define then directly on the html elements passing the keyword `this` and using `mfw.getDataFromElement` method to construct data. See `data-group`, `data-param`, `data-api` & `data-timeout`.
 
 ---
 
@@ -148,8 +149,9 @@ All interaction between the engine and the DOM is driven by `data-` attribute ta
 | [data-each-index](#data-for-data-each--data-each-index) | N/A | set by renderer to referance position within `data-for` loop
 | [data-value](#data-value) | path within `mfw.data` | bind data from `mfw.data` object to element's value (2-way input binding)
 | [data-group](#data-group) | string | used by `mfw.getDataFromElement` and `mfw.getDataFromInputGroup` for event handlers
-| [data-param](#data-param--data-api) | string | used by `mfw.getDataFromElement` for event handlers
-| [data-api](#data-param--data-api) | string | used by `mfw.getDataFromElement` for event handlers
+| [data-param](#data-param-data-api--data-timeout) | string | used by `mfw.getDataFromElement` for event handlers
+| [data-api](#data-param-data-api--data-timeout) | string | used by `mfw.getDataFromElement` for event handlers
+| [data-timeout](#data-param-data-api--data-timeout) | string | used by `mfw.getDataFromElement` for event handlers
 
 
 ---
@@ -494,9 +496,9 @@ When the button is clicked, the console will have
 
 ---
 
-### data-param & data-api
+### data-param, data-api & data-timeout
 
-Available on any html tag. `data-param` value will be a path within `mfw.data`. `data-api` value will be treated as a string.
+Available on any html tag. `data-param` value will be a path within `mfw.data`. `data-api` value will be treated as a string. `data-timeout` value will be converted to a number.
 
 Both these tags are only used by the `mfw.getDataFromElement(element)` method to aid data lookups, especially useful in `data-for` loops for clickable elements.
 
@@ -504,7 +506,7 @@ Both these tags are only used by the `mfw.getDataFromElement(element)` method to
 <input name="firstName" data-group="newPerson">
 <input name="laststName" data-group="newPerson">
 <input name="age" data-group="newPerson">
-<button onclick="submitForm(this)" data-group="newPerson" data-api="/API/addPerson" data-param="test.hello">Add</button>
+<button onclick="submitForm(this)" data-group="newPerson" data-api="/API/addPerson" data-param="test.hello" data-timeout="60">Add</button>
 
 <script>
     mfw.data = {
@@ -523,6 +525,7 @@ When the button is clicked, the console will have
 ```javascript
 {
     api: "/API/addPerson",
+    timeout: 60,
     groupData: {
         firstName: "Contents of firstName",
         lastName: "Contents of lastName",
