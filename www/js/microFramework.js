@@ -1,5 +1,5 @@
 const mfw = {
-    engine: '1.0.003',
+    engine: '1.0.004',
     data: {},
     lastRender: 0,
     maxLoopItterations: 20,
@@ -15,6 +15,7 @@ const mfw = {
         if(!path || !data) return undefined;
         let paths = path.split('.');
         for(let path of paths){
+            if(!data || typeof(data)!='object') return undefined;
             if(data[path]===undefined) return undefined;
             data = data[path];
         }
