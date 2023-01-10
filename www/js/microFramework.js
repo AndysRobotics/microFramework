@@ -53,6 +53,17 @@ const mfw = {
         return result;
     },
 
+    getElementIndex(el){
+        if(!el || typeof(el.getAttribute)!='function') return null;
+        
+        while(el){
+            let index = el.getAttribute('data-each-index');
+            if(index!==null) return index;
+            el = el.parentElement;
+        }
+        return null;
+    },
+
     getDataFromElement(el){
         if(!el || typeof(el.getAttribute)!='function') return { index: null, api: null, timeout: null, param: null, groupData: {} };
         let path = el.getAttribute('data-param');
@@ -64,7 +75,7 @@ const mfw = {
             timeout = null;
         }
         return {
-            index: el.getAttribute('data-each-index'),
+            index: this.getElementIndex(el),
             api: el.getAttribute('data-api'),
             timeout,
             param: this.getDataByPath(path),
