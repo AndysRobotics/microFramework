@@ -1,5 +1,5 @@
 const mfw = {
-    engine: '1.0.004',
+    engine: '1.0.005',
     data: {},
     lastRender: 0,
     maxLoopItterations: 20,
@@ -168,7 +168,7 @@ const mfw = {
             let prevAttr = item.getAttribute(attribute);
             if(prevAttr==forCondition){
                 item.setAttribute(attribute, prevAttr + '.' + index);
-            }else if(prevAttr && prevAttr.substring(0, len+1)==forCondition + '.'){
+            }else if(prevAttr && (prevAttr.substring(0, len+1)==forCondition + '.' || prevAttr.substring(0, len+2)=='!' + forCondition + '.')){
                 prevAttr = prevAttr.replace(forCondition + '.', forCondition + '.' + index + '.')
                 item.setAttribute(attribute, prevAttr);
             }
