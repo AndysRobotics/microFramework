@@ -3,7 +3,7 @@ const mfw = {
     data: {},
     lastRender: 0,
     maxLoopItterations: 20,
-    bindableAttributes: [
+    bindableAttributes: [ // For path fixing in loops
         'data-if', 'data-for', 'data-innerHtml',
         'data-switch', 'data-value', 'data-param',
         'data-src', 'data-class', 'data-class-if',
