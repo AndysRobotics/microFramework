@@ -1,5 +1,5 @@
 const mfw = {
-    engine: '1.0.005',
+    engine: '1.0.006',
     data: {},
     lastRender: 0,
     maxLoopItterations: 20,
@@ -282,9 +282,15 @@ const mfw = {
         for(let el of document.querySelectorAll('[data-src]')){
             let path = el.getAttribute('data-src');
             let data = this.getDataByPath(path);
-            if(data){
+            if(data && typeof(data)=='string'){
                 this.showElement(el);
-                el.src = data;
+                if(el.src){
+                    let url = new URL(el.src);
+                    let prevSrc = url.pathname + url.search;
+                    if(!prevSrc || data!=prevSrc) el.src = data;
+                }else{
+                    el.src = data;
+                }
             }else{
                 this.hideElement(el);
                 el.src = '';
