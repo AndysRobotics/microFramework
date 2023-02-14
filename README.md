@@ -12,7 +12,7 @@
 
 This engine is 100% javascript with no dependencies and no server side processing/compiling required. This allows the engine to be served by any form of webserver.
 
-It is very lightweight (v1.0.005 is 12.8KB or 5.9KB minified) and will only render when required. There is no virtual DOM, all interaction with the DOM is via `data-` attribute tags.
+It is very lightweight (v1.0.007 is 13KB or 6KB minified) and will only render when required. There is no virtual DOM, all interaction with the DOM is via `data-` attribute tags.
 Only 1 event listener is registered to the DOM keeping CPU/Memory requirements low.
 
 > **NOTE** This engine is not recommended for very large projects. It doesn't have components, and apart from for loops (explained bellow) all html objects will exist at all times.
@@ -40,7 +40,7 @@ The `mfw.data` object can contain any structure, including nested branches, arra
 * www/index.html - Simple example of features
 * www/css/style.css - Style sheet for example - not required for framework to operate
 * www/js/microFramework.js - The full micro framework engine
-* www/js/mfw1.0.000 - Minified version of the engine
+* www/js/mfw-min.js - Minified version of the engine
 
 ---
 
@@ -135,7 +135,7 @@ All interaction between the engine and the DOM is driven by `data-` attribute ta
 | Attribute | Value | Desciption |
 | --- | --- | --- |
 | [data-innerHtml](#data-innerhtml) | path within `mfw.data` | bind data from `mfw.data` object to the html
-| [data-unknown](#data-unknown) | string | used if `data-innerHtml` is empty or not found
+| [data-unknown](#data-unknown) | string | used if `data-innerHtml` is empty or not found (also used on [data-value](#data-value))
 | [data-src](#data-src) | path within `mfw.data` | bind data from `mfw.data` object to element's src attribute
 | [data-show](#data-show) | string | used to change the override the default display property `block` when an element is shown 
 | [data-if](#data-if) | path within `mfw.data` & string condition | used to display an element based on a condition met from `mfw.data` object
@@ -446,9 +446,17 @@ If the input is of the type `checkbox` then the data will be converted to a bool
 
 `mfw.init()` will attach an input event listener on the `document` object which fires on any input change when an field is in or out of focus. The event handler will check if the target has `data-value` attribute and copy the input into the `mfw.data` object. If the value has changed, the handler will automatically trigger a fresh render.
 
+Use `data-unknown` attribute to default missing values upon rendering, this is usefull with `select` elements.
+
 ```html
 <input data-value="test.name"><br>
 <div data-innerHtml="test.name">This will be the contents of the input</div>
+
+<select data-value="test.type" data-unknown="Type2">
+    <option value="Type1">Type 1</option>
+    <option value="Type2">Type 2</option>
+    <option value="Type3">Type 3</option>
+</select>
 ```
 
 ---

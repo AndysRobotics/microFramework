@@ -1,9 +1,9 @@
 const mfw = {
-    engine: '1.0.006',
+    engine: '1.0.007',
     data: {},
     lastRender: 0,
     maxLoopItterations: 20,
-    bindableAttributes: [ // For path fixing in loops
+    bindableAttributes: [
         'data-if', 'data-for', 'data-innerHtml',
         'data-switch', 'data-value', 'data-param',
         'data-src', 'data-class', 'data-class-if',
@@ -321,11 +321,18 @@ const mfw = {
     _renderInputValues: function(){
         for(let el of document.querySelectorAll('[data-value]')){
             let path = el.getAttribute('data-value');
+            let value = this.getDataByPath(path);
+            if(value===undefined) value = el.getAttribute('data-unknown');
             if(el.type=="checkbox"){
-                if(this.getDataByPath(path)) el.setAttribute('checked', '');
-                else el.removeAttribute('checked');
+                if(value){
+                    el.setAttribute('checked', '');
+                    el.checked = true;
+                }else{
+                    el.removeAttribute('checked');
+                    el.checked = false;
+                }
             }else{
-                el.value = this.getDataByPath(path) || '';
+                el.value = value || '';
             }
         }
     },
