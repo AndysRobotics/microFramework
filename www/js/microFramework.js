@@ -1,5 +1,5 @@
 const mfw = {
-    engine: '1.0.008',
+    engine: '1.0.009',
     data: {},
     lastRender: 0,
     useDomPurify: (typeof(DOMPurify)!='undefined' && typeof(DOMPurify.sanitize)=='function'),
@@ -101,9 +101,9 @@ const mfw = {
         });
     },
 
-    render: function(){
-        this._renderForLoops();
-        this._renderSwithes();
+    render: function(renderForLoops = true, renderSwitches = true){
+        if(renderForLoops) this._renderForLoops();
+        if(renderSwitches) this._renderSwithes();
         this._renderClassNames();
         this._renderIfs();
         this._renderInnerHtml();
@@ -274,7 +274,7 @@ const mfw = {
                 if(typeof(data)=="object"){
                     el.innerHTML = JSON.stringify(data, null, 2);
                 }else{
-                    if(this.useDomPurify){
+                    if(this.useDomPurify && data){
                         el.innerHTML = DOMPurify.sanitize(data);
                     }else{
                         el.innerHTML = data;
@@ -330,7 +330,10 @@ const mfw = {
         for(let el of document.querySelectorAll('[data-value]')){
             let path = el.getAttribute('data-value');
             let value = this.getDataByPath(path);
-            if(value===undefined) value = el.getAttribute('data-unknown');
+            if(value===undefined){
+                value = el.getAttribute('data-unknown');
+                this.setDataByPath(path, value);
+            }
             if(el.type=="checkbox"){
                 if(value){
                     el.setAttribute('checked', '');

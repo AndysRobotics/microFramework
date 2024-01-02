@@ -12,7 +12,7 @@
 
 This engine is 100% javascript with no dependencies and no server side processing/compiling required. This allows the engine to be served by any form of webserver.
 
-It is very lightweight (v1.0.007 is 13KB or 6KB minified) and will only render when required. There is no virtual DOM, all interaction with the DOM is via `data-` attribute tags.
+It is very lightweight (v1.0.009 is 14KB or 6KB minified) and will only render when required. There is no virtual DOM, all interaction with the DOM is via `data-` attribute tags.
 Only 1 event listener is registered to the DOM keeping CPU/Memory requirements low.
 
 > **NOTE** This engine is not recommended for very large projects. It doesn't have components, and apart from for loops (explained bellow) all html objects will exist at all times.
