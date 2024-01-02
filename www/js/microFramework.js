@@ -1,7 +1,8 @@
 const mfw = {
-    engine: '1.0.007',
+    engine: '1.0.008',
     data: {},
     lastRender: 0,
+    useDomPurify: (typeof(DOMPurify)!='undefined' && typeof(DOMPurify.sanitize)=='function'),
     maxLoopItterations: 20,
     bindableAttributes: [
         'data-if', 'data-for', 'data-innerHtml',
@@ -232,7 +233,6 @@ const mfw = {
                 if(caseCondition==value){
                     caseFound = true;
                     this.showElement(c);
-                    break;
                 }else{
                     this.hideElement(c);
                 }
@@ -266,12 +266,20 @@ const mfw = {
     },
 
     _renderInnerHtml: function(){
+        this.useDomPurify = (typeof(DOMPurify)!='undefined' && typeof(DOMPurify.sanitize)=='function');
         for(let el of document.querySelectorAll('[data-innerHtml]')){
             let condition = el.getAttribute('data-innerHtml');
             let data = this.getDataByPath(condition);
             if(data || data===0 || data===false){
-                if(typeof(data)=="object") el.innerHTML = JSON.stringify(data, null, 2);
-                else el.innerHTML = data;
+                if(typeof(data)=="object"){
+                    el.innerHTML = JSON.stringify(data, null, 2);
+                }else{
+                    if(this.useDomPurify){
+                        el.innerHTML = DOMPurify.sanitize(data);
+                    }else{
+                        el.innerHTML = data;
+                    }
+                }
             }else{
                 el.innerHTML = el.getAttribute('data-unknown') || '';
             }
